@@ -1,0 +1,17 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <label>Email:
+    <input type="email" formControlName="email" />
+  </label>
+  <div *ngIf="form.controls.email.invalid && form.controls.email.touched">
+    Введіть коректний email.
+  </div>
+
+  <label>Password:
+    <input type="password" formControlName="password" />
+  </label>
+  <div *ngIf="form.controls.password.invalid && form.controls.password.touched">
+    Пароль обов’язковий.
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Login</button>
+</form>
