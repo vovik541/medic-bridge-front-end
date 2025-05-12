@@ -61,3 +61,4 @@ For more information on using the Angular CLI, including detailed command refere
 ## Setup
 bypass about_Execution_Policies
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted 
+npm install bootstrap jquery popper.js

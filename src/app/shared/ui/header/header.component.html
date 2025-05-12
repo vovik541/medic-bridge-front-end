@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Medic Bridge</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" (click)="openModal()">Логін </a> <!--<span class="sr-only">(current)</span> -->
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="alert('signUp')">Реєстрація</a>
+      </li>
+      <!-- routerLink="login" -->
+    </ul>
+    <!-- <span class="navbar-text">
+      Next
+    </span> -->
+  </div>
+</nav>
+<app-login-modal #loginModal></app-login-modal>
