@@ -2,14 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/auth.service';
-
-export interface RegisterRequest {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-}
+import { AuthService, RegisterRequest } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -30,6 +23,7 @@ export class RegisterComponent {
       lastname: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
+      login: ['', [Validators.required]]
     });
   }
 
@@ -41,6 +35,7 @@ export class RegisterComponent {
       lastname: this.form.value.lastname!,
       email: this.form.value.email!,
       password: this.form.value.password!,
+      login: this.form.value.login!,
     };
 
     this.auth.register(payload).subscribe({

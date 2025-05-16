@@ -18,6 +18,7 @@ export interface AuthenticationResponse {
 export interface RegisterRequest {
   firstname: string;
   lastname: string;
+  login: string;
   email: string;
   password: string;
 }
