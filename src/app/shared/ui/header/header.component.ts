@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { LoginModalComponent } from '../login-modal/login-modal.component';
 import { AuthService } from '../../../core/auth.service';
+import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { RegisterModalComponent } from '../register-modal/register-modal.component';
 
 @Component({
   selector: 'app-header',
-  imports: [LoginModalComponent, RegisterModalComponent],
+  imports: [LoginModalComponent, RegisterModalComponent, RouterModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })

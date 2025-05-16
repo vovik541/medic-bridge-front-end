@@ -7,10 +7,12 @@ import { UserComponent } from './shared/ui/user/user.component';
 import { AdminComponent } from './shared/ui/admin/admin.component';
 import { SupportComponent } from './shared/ui/support/support.component';
 import { PhysicianComponent } from './shared/ui/physician/physician.component';
+import { SpecialistDetailComponent } from './shared/ui/specialist-detail/specialist-detail.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'user', component: UserComponent },
+    { path: 'user/specialist/:id', component: SpecialistDetailComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'support', component: SupportComponent },
     { path: 'physician', component: PhysicianComponent },

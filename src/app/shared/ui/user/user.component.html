@@ -1,1 +1,35 @@
-<p>user works!</p>
+<form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline mb-3">
+  <input formControlName="city" class="form-control mr-2 mb-2" placeholder="Місто">
+  <input formControlName="language" class="form-control mr-2 mb-2" placeholder="Мова">
+  <input formControlName="doctorType" class="form-control mr-2 mb-2" placeholder="Спеціалізація">
+  <button type="submit" class="btn btn-primary mb-2">Пошук</button>
+</form>
+
+<div *ngIf="loading" class="text-center my-3">
+  <p>Завантаження...</p>
+</div>
+
+<ul *ngIf="doctors.length">
+  <li *ngFor="let doctor of doctors" class="mb-3 p-3 border rounded d-flex align-items-center">
+    <img *ngIf="doctor.imageUrl" [src]="doctor.imageUrl"
+         alt="Фото {{ doctor.firstName }} {{ doctor.lastName }}"
+         class="rounded-circle me-3"
+         width="64" height="64" />
+
+    <div>
+      <h5 class="mb-1">{{ doctor.firstName }} {{ doctor.lastName }}</h5>
+      <p class="mb-1">
+        <strong>Email:</strong> {{ doctor.email }}<br>
+        <strong>Логін:</strong> {{ doctor.login }}<br>
+        <strong>Дата реєстрації:</strong> {{ doctor.registrationDate | date:'mediumDate' }}
+      </p>
+      <a [routerLink]="['/user/specialist', doctor.id]" class="btn btn-sm btn-outline-primary">
+        Переглянути профіль
+      </a>
+    </div>
+  </li>
+</ul>
+
+<div *ngIf="!loading && doctors.length === 0" class="text-muted">
+  <p>Немає результатів за обраними фільтрами.</p>
+</div>

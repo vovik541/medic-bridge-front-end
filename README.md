@@ -62,3 +62,5 @@ For more information on using the Angular CLI, including detailed command refere
 bypass about_Execution_Policies
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted 
 npm install bootstrap jquery popper.js
+npm install @fullcalendar/core @fullcalendar/angular @fullcalendar/core @fullcalendar/timegrid @fullcalendar/interaction
+npm install --save-dev @types/fullcalendar
