@@ -1,2 +1,38 @@
-<p>specialist-detail works!</p>
-<full-calendar [options]="calendarOptions"></full-calendar>
+<div *ngIf="specialistInfo" class="container mb-4">
+  <div class="d-flex align-items-center mb-3">
+    <img *ngIf="specialistInfo.specialist.imageUrl" 
+         [src]="specialistInfo.specialist.imageUrl" 
+         alt="Фото {{ specialistInfo.specialist.firstName }}" 
+         width="96" height="96" class="rounded-circle me-3" />
+    <div>
+      <h4>Ім'я {{ specialistInfo.specialist.firstName }} {{ specialistInfo.specialist.lastName }}</h4>
+      <p class="mb-1"><strong>Email:</strong> {{ specialistInfo.specialist.email }}</p>
+      <p class="mb-1"><strong>Логін:</strong> {{ specialistInfo.specialist.login }}</p>
+      <p class="mb-1"><strong>Дата реєстрації:</strong> {{ specialistInfo.specialist.registrationDate | date:'mediumDate' }}</p>
+      <p class="mb-1"><strong>Спеціальність:</strong> {{ specialistInfo.specialist.doctorType }}</p>
+    </div>
+    <div>
+      <h3>Про мене: </h3>
+        <p class="mb-1">
+
+            Lorem ipsum dolor sit amet. Vel reiciendis culpa et ipsam repellat ad tenetur quia aut dolor laborum! Et nisi quia a consequuntur dolores in accusamus quidem et eligendi commodi et voluptatum sunt qui dolores illum ex officiis voluptas?
+
+Ut doloribus consectetur aut quas consequatur id rerum eaque aut iusto necessitatibus eos temporibus nulla. Non velit illo qui doloribus reprehenderit et molestiae soluta.
+
+Ut dolor nihil quo dolore soluta id exercitationem laborum et rerum consectetur eum quisquam maiores ab sunt impedit ex ipsa dolores. Non error quia ad fuga explicabo id eaque voluptatem. Et earum iusto hic necessitatibus nulla cum labore atque sit consectetur dignissimos est blanditiis harum.
+        </p>
+    
+    
+      
+
+    </div>
+  </div>
+  <div *ngIf="specialistInfo.approvedPositions?.length">
+    <h5>Затверджені спеціалізації:</h5>
+    <ul>
+      <li *ngFor="let position of specialistInfo.approvedPositions">{{ position }}</li>
+    </ul>
+  </div>
+</div>
+
+<full-calendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>

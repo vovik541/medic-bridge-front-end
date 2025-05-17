@@ -5,28 +5,40 @@ import { CalendarOptions } from '@fullcalendar/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-
-import { environment } from '../../../environments/environment';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-specialist-detail',
   standalone: true,
   imports: [CommonModule, FullCalendarModule],
-  template: `
-    <full-calendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>
-  `
+  templateUrl: './specialist-detail.component.html'
 })
 export class SpecialistDetailComponent {
   calendarOptions!: CalendarOptions;
   specialistId!: number;
   doctorType!: string;
+  specialistInfo: any;
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.specialistId = Number(params.get('id'));
       this.doctorType = params.get('specialistType') ?? '';
-      this.loadCalendar();
+      this.loadSpecialistInfo(); // load info before calendar
+    });
+  }
+
+  loadSpecialistInfo(): void {
+    this.http.get<any>(`${environment.apiUrl}/users/specialist-info-page`, {
+      params: { specialistId: this.specialistId }
+    }).subscribe({
+      next: (data) => {
+        this.specialistInfo = data;
+        this.loadCalendar();
+      },
+      error: (err) => {
+        console.error('Не вдалося завантажити інформацію про спеціаліста', err);
+      }
     });
   }
 
@@ -49,7 +61,7 @@ export class SpecialistDetailComponent {
     if (confirmBooking) {
       const requestBody = {
         specialistId: this.specialistId,
-        startTime: selectionInfo.startStr, // ISO з зоною, підходить для OffsetDateTime
+        startTime: selectionInfo.startStr,
         endTime: selectionInfo.endStr,
         description: 'Консультація',
         summary: 'Початкова консультація',

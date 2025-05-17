@@ -27,9 +27,40 @@
         Переглянути профіль
       </a>
     </div>
+    <div>
+        Lorem ipsum dolor sit amet. Vel reiciendis culpa et ipsam repellat ad tenetur quia aut dolor laborum! Et nisi quia a consequuntur dolores in accusamus quidem et eligendi commodi et voluptatum sunt qui dolores illum ex officiis voluptas? Ut doloribus consectetur aut quas consequatur id rerum eaque aut iusto necessitatibus eos temporibus nulla. Non velit illo qui doloribus reprehenderit et molestiae soluta. Ut dolor nihil quo dolore soluta id exercitationem laborum et rerum consectetur eum quisquam maiores ab sunt impedit ex ipsa dolores. Non error quia ad fuga explicabo id eaque voluptatem. Et earum iusto hic necessitatibus nulla cum labore atque sit consectetur dignissimos est blanditiis harum.
+    </div>
   </li>
 </ul>
 
 <div *ngIf="!loading && doctors.length === 0" class="text-muted">
   <p>Немає результатів за обраними фільтрами.</p>
+</div>
+
+
+<div class="mt-5">
+  <h4>Мої консультації</h4>
+
+  <ul class="list-group" *ngIf="consultations.length; else noConsultations">
+    <li *ngFor="let c of consultations" class="list-group-item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ c.doctor.firstName }} {{ c.doctor.lastName }}</strong><br>
+          <small>Email: {{ c.doctor.email }}</small>
+        </div>
+        <div class="text-end">
+          <span class="badge bg-info">{{ c.status }}</span><br>
+          <small>{{ c.start | date:'short' }} — {{ c.end | date:'short' }}</small>
+        </div>
+      </div>
+      <div class="mt-2">
+        <strong>Тема:</strong> {{ c.summary }}<br>
+        <strong>Опис:</strong> {{ c.description }}
+      </div>
+    </li>
+  </ul>
+
+  <ng-template #noConsultations>
+    <p class="text-muted">У вас ще немає запланованих консультацій.</p>
+  </ng-template>
 </div>

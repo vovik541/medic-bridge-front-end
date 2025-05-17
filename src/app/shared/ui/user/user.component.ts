@@ -16,7 +16,27 @@ interface SpecialistDto {
   imageUrl: string;
   doctorType: string
 }
+interface UserDto {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  login: string;
+  isLocked: boolean;
+  registrationDate: string;
+  imageUrl: string;
+  roles: string[];
+}
 
+interface ConsultationDto {
+  id: number;
+  start: string;
+  end: string;
+  status: string;
+  description: string;
+  summary: string;
+  doctor: UserDto;
+}
 @Component({
   selector: 'app-user',
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
@@ -26,6 +46,7 @@ interface SpecialistDto {
 export class UserComponent {
   searchForm!: FormGroup;
   doctors: SpecialistDto[] = [];
+  consultations: ConsultationDto[] = [];
   loading = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
@@ -36,6 +57,7 @@ export class UserComponent {
       language: ['Українська'],
       doctorType: ['Невролог']
     });
+    this.loadConsultations();
   }
   openDoctorPage(specialistType: string ,id: number): void {
     const url = `/user/specialist/${specialistType}/${id}`;
@@ -65,4 +87,12 @@ export class UserComponent {
       }
     });
   }
+  loadConsultations(): void {
+  this.http.get<{ consultations: ConsultationDto[] }>(
+    `${environment.apiUrl}/appointments/my-appointments`
+  ).subscribe({
+    next: res => this.consultations = res.consultations,
+    error: () => alert('Не вдалося завантажити консультації')
+  });
+}
 }
