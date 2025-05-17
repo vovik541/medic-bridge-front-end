@@ -14,6 +14,7 @@ interface SpecialistDto {
   login: string;
   registrationDate: string;
   imageUrl: string;
+  doctorType: string
 }
 
 @Component({
@@ -33,11 +34,11 @@ export class UserComponent {
     this.searchForm = this.fb.group({
       city: ['Київ'],
       language: ['Українська'],
-      doctorType: ['Дієтолог']
+      doctorType: ['Невролог']
     });
   }
-  openDoctorPage(id: number): void {
-    const url = `/user/specialist/${id}`;
+  openDoctorPage(specialistType: string ,id: number): void {
+    const url = `/user/specialist/${specialistType}/${id}`;
     window.open(url, '_blank');
   }
 

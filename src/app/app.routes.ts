@@ -12,7 +12,8 @@ import { SpecialistDetailComponent } from './shared/ui/specialist-detail/special
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'user', component: UserComponent },
-    { path: 'user/specialist/:id', component: SpecialistDetailComponent },
+    // { path: 'user/specialist/:id', component: SpecialistDetailComponent },
+    { path: 'user/specialist/:specialistType/:id', loadComponent: () => import('../app/shared/ui/specialist-detail/specialist-detail.component').then(m => m.SpecialistDetailComponent)},
     { path: 'admin', component: AdminComponent },
     { path: 'support', component: SupportComponent },
     { path: 'physician', component: PhysicianComponent },
