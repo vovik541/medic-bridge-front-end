@@ -1,0 +1,31 @@
+<h2>Затверджені консультації</h2>
+<ul *ngIf="approved.length; else noApproved">
+  <li *ngFor="let c of approved">
+    {{ c.start | date:'short' }} — {{ c.user.firstName }} {{ c.user.lastName }} — {{ c.status }}
+  </li>
+</ul>
+<ng-template #noApproved><p>Немає затверджених консультацій.</p></ng-template>
+
+<h2>Очікують затвердження</h2>
+<ul *ngIf="unapproved.length; else noUnapproved">
+  <li *ngFor="let c of unapproved">
+    {{ c.start | date:'short' }} — {{ c.user.firstName }} {{ c.user.lastName }} — {{ c.status }}
+  </li>
+</ul>
+<ng-template #noUnapproved><p>Немає очікуваних консультацій.</p></ng-template>
+
+<h2>Минули консультації</h2>
+<ul *ngIf="past.length; else noPast">
+  <li *ngFor="let c of past">
+    {{ c.start | date:'short' }} — {{ c.user.firstName }} {{ c.user.lastName }} — {{ c.status }}
+  </li>
+</ul>
+<ng-template #noPast><p>Немає минулих консультацій.</p></ng-template>
+
+<h2>Відхилені консультації</h2>
+<ul *ngIf="rejected.length; else noRejected">
+  <li *ngFor="let c of rejected">
+    {{ c.start | date:'short' }} — {{ c.user.firstName }} {{ c.user.lastName }} — {{ c.status }}
+  </li>
+</ul>
+<ng-template #noRejected><p>Немає відхилених консультацій.</p></ng-template>

@@ -9,6 +9,7 @@ import { SupportComponent } from './shared/ui/support/support.component';
 import { PhysicianComponent } from './shared/ui/physician/physician.component';
 import { SpecialistDetailComponent } from './shared/ui/specialist-detail/specialist-detail.component';
 import { SettingsComponent } from './settings/settings.component';
+import { DoctorPageComponent } from './shared/ui/doctor-page/doctor-page.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,6 +20,7 @@ export const routes: Routes = [
     { path: 'support', component: SupportComponent },
     { path: 'physician', component: PhysicianComponent },
     { path: 'settings', component: SettingsComponent },
+    { path: 'doctor', component: DoctorPageComponent },
     // { path: 'login', component: LoginComponent },
     // { path: 'dashboard', component: DashboardComponent },
     // { path: 'register', component: RegisterComponent }
