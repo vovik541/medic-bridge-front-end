@@ -5,8 +5,9 @@ import { CalendarOptions } from '@fullcalendar/core';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { CommonModule } from '@angular/common';
+
 import { environment } from '../../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-specialist-detail',
@@ -19,10 +20,12 @@ import { environment } from '../../../environments/environment';
 export class SpecialistDetailComponent {
   calendarOptions!: CalendarOptions;
   specialistId!: number;
+  doctorType!: string;
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
-      this.specialistId = Number(params.get('id')); // /user/specialist/:id
+      this.specialistId = Number(params.get('id'));
+      this.doctorType = params.get('specialistType') ?? '';
       this.loadCalendar();
     });
   }
@@ -46,18 +49,22 @@ export class SpecialistDetailComponent {
     if (confirmBooking) {
       const requestBody = {
         specialistId: this.specialistId,
-        startTime: selectionInfo.startStr,
+        startTime: selectionInfo.startStr, // ISO з зоною, підходить для OffsetDateTime
         endTime: selectionInfo.endStr,
         description: 'Консультація',
         summary: 'Початкова консультація',
-        doctorTypeId: 1 // можна витягувати динамічно, якщо потрібно
+        doctorType: this.doctorType
       };
-      
-      console.log(requestBody);
 
-      this.http.post(`${environment.apiUrl}/appointments/book`, requestBody).subscribe(() => {
-        alert('Успішно заброньовано!');
-        window.location.reload();
+      this.http.post(`${environment.apiUrl}/appointments/book`, requestBody).subscribe({
+        next: () => {
+          alert('Успішно заброньовано!');
+          window.location.reload();
+        },
+        error: (err) => {
+          console.error('Booking error:', err);
+          alert('Помилка під час бронювання');
+        }
       });
     }
   }
