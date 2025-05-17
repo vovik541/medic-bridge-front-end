@@ -34,5 +34,22 @@ Ut dolor nihil quo dolore soluta id exercitationem laborum et rerum consectetur 
     </ul>
   </div>
 </div>
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-window">
+    <h5>Запис на консультацію з {{ specialistInfo.specialist.firstName }} {{ specialistInfo.specialist.lastName }}</h5>
+    <p><strong>Час:</strong> {{ selectedStart | date:'short' }} – {{ selectedEnd | date:'short' }}</p>
+
+    <label>Опис проблеми:</label>
+    <textarea [(ngModel)]="description" class="form-control mb-2"></textarea>
+
+    <label>Документ:</label>
+    <input type="file" (change)="onFileSelected($event)" class="form-control mb-3" />
+
+    <div class="text-end">
+      <button class="btn btn-secondary me-2" (click)="closeModal()">Скасувати</button>
+      <button class="btn btn-success" (click)="submitAppointment()">Підтвердити</button>
+    </div>
+  </div>
+</div>
 
 <full-calendar *ngIf="calendarOptions" [options]="calendarOptions"></full-calendar>

@@ -1,0 +1,31 @@
+<h3 class="mb-3">Налаштування профілю</h3>
+
+<div *ngIf="userData" class="mb-4">
+  <img *ngIf="imagePreviewUrl" [src]="imagePreviewUrl" alt="Аватар" class="rounded-circle mb-2" width="100" height="100" />
+  <p><strong>{{ userData.firstName }} {{ userData.lastName }}</strong></p>
+  <p>Email: {{ userData.email }}</p>
+  <p>Логін: {{ userData.login }}</p>
+</div>
+
+<hr>
+
+<form [formGroup]="userForm" (ngSubmit)="onUpdateInfo()" class="mb-4">
+  <h5>Зміна особистої інформації</h5>
+  <input type="text" formControlName="firstName" class="form-control mb-2" placeholder="Ім'я">
+  <input type="text" formControlName="lastName" class="form-control mb-2" placeholder="Прізвище">
+  <input type="email" formControlName="email" class="form-control mb-2" placeholder="Email">
+  <input type="text" formControlName="login" class="form-control mb-2" placeholder="Логін">
+  <button class="btn btn-primary">Зберегти зміни</button>
+</form>
+
+<form (submit)="onImageSelected($event)" class="mb-4">
+  <h5>Оновити фото</h5>
+  <input type="file" (change)="onImageSelected($event)" class="form-control mb-2">
+</form>
+
+<form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="mb-4">
+  <h5>Зміна пароля</h5>
+  <input type="password" formControlName="oldPassword" class="form-control mb-2" placeholder="Старий пароль">
+  <input type="password" formControlName="newPassword" class="form-control mb-2" placeholder="Новий пароль">
+  <button class="btn btn-warning">Оновити пароль</button>
+</form>

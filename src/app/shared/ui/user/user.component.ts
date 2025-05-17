@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../../environments/environment'
+import { environment } from '../../../environments/environment';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -14,8 +14,9 @@ interface SpecialistDto {
   login: string;
   registrationDate: string;
   imageUrl: string;
-  doctorType: string
+  doctorType: string;
 }
+
 interface UserDto {
   id: number;
   firstName: string;
@@ -34,20 +35,24 @@ interface ConsultationDto {
   end: string;
   status: string;
   description: string;
-  summary: string;
+  summary?: string;
+  meetingLink?: string;
+  attachedDocumentUrl?: string;
   doctor: UserDto;
 }
+
 @Component({
   selector: 'app-user',
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
-export class UserComponent {
+export class UserComponent implements OnInit {
   searchForm!: FormGroup;
   doctors: SpecialistDto[] = [];
   consultations: ConsultationDto[] = [];
   loading = false;
+  environment = environment; // Доступ до apiUrl у шаблоні
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
 
@@ -59,6 +64,7 @@ export class UserComponent {
     });
     this.loadConsultations();
   }
+
   openDoctorPage(specialistType: string ,id: number): void {
     const url = `/user/specialist/${specialistType}/${id}`;
     window.open(url, '_blank');
@@ -87,12 +93,31 @@ export class UserComponent {
       }
     });
   }
+
   loadConsultations(): void {
-  this.http.get<{ consultations: ConsultationDto[] }>(
-    `${environment.apiUrl}/appointments/my-appointments`
-  ).subscribe({
-    next: res => this.consultations = res.consultations,
-    error: () => alert('Не вдалося завантажити консультації')
+    this.http.get<{ consultations: ConsultationDto[] }>(
+      `${environment.apiUrl}/appointments/my-appointments`
+    ).subscribe({
+      next: res => this.consultations = res.consultations,
+      error: () => alert('Не вдалося завантажити консультації')
+    });
+  }
+
+  downloadAttachment(fileUrl: string, suggestedName: string = 'документ'): void {
+  this.http.get(`${environment.apiUrl}${fileUrl}`, {
+    responseType: 'blob',
+  }).subscribe(blob => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = suggestedName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, error => {
+    console.error('Помилка при завантаженні файлу', error);
+    alert('Не вдалося завантажити файл');
   });
 }
 }

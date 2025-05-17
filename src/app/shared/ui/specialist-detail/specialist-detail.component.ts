@@ -1,3 +1,4 @@
+// specialist-detail.component.ts
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
@@ -7,12 +8,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../environments/environment';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-specialist-detail',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule],
-  templateUrl: './specialist-detail.component.html'
+  imports: [CommonModule, FullCalendarModule, FormsModule],
+  templateUrl: './specialist-detail.component.html',
+  styleUrls: ['./specialist-detail.component.css']
 })
 export class SpecialistDetailComponent {
   calendarOptions!: CalendarOptions;
@@ -20,11 +23,19 @@ export class SpecialistDetailComponent {
   doctorType!: string;
   specialistInfo: any;
 
+  // modal state
+  showModal = false;
+  selectedStart!: string;
+  selectedEnd!: string;
+  description = '';
+  summary = '';
+  selectedFile: File | null = null;
+
   constructor(private http: HttpClient, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.specialistId = Number(params.get('id'));
       this.doctorType = params.get('specialistType') ?? '';
-      this.loadSpecialistInfo(); // load info before calendar
+      this.loadSpecialistInfo();
     });
   }
 
@@ -57,27 +68,51 @@ export class SpecialistDetailComponent {
   }
 
   handleSlotSelect(selectionInfo: any): void {
-    const confirmBooking = confirm(`Забронювати з ${selectionInfo.startStr} до ${selectionInfo.endStr}?`);
-    if (confirmBooking) {
-      const requestBody = {
-        specialistId: this.specialistId,
-        startTime: selectionInfo.startStr,
-        endTime: selectionInfo.endStr,
-        description: 'Консультація',
-        summary: 'Початкова консультація',
-        doctorType: this.doctorType
-      };
+    this.selectedStart = selectionInfo.startStr;
+    this.selectedEnd = selectionInfo.endStr;
+    this.description = '';
+    this.summary = '';
+    this.selectedFile = null;
+    this.showModal = true;
+  }
 
-      this.http.post(`${environment.apiUrl}/appointments/book`, requestBody).subscribe({
-        next: () => {
-          alert('Успішно заброньовано!');
-          window.location.reload();
-        },
-        error: (err) => {
-          console.error('Booking error:', err);
-          alert('Помилка під час бронювання');
-        }
-      });
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
     }
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  submitAppointment(): void {
+    const requestBody = {
+      specialistId: this.specialistId,
+      startTime: this.selectedStart,
+      endTime: this.selectedEnd,
+      description: this.description,
+      summary: this.summary,
+      doctorType: this.doctorType
+    };
+
+    const formData = new FormData();
+    formData.append('appointment', new Blob([JSON.stringify(requestBody)], { type: 'application/json' }));
+    if (this.selectedFile) {
+      formData.append('attachedDocument', this.selectedFile);
+    }
+
+    this.http.post(`${environment.apiUrl}/appointments/book`, formData).subscribe({
+      next: () => {
+        alert('Успішно заброньовано!');
+        this.closeModal();
+        window.location.reload();
+      },
+      error: (err) => {
+        console.error('Booking error:', err);
+        alert('Помилка під час бронювання');
+      }
+    });
   }
 }

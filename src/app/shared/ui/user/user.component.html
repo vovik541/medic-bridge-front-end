@@ -37,7 +37,6 @@
   <p>Немає результатів за обраними фільтрами.</p>
 </div>
 
-
 <div class="mt-5">
   <h4>Мої консультації</h4>
 
@@ -54,8 +53,21 @@
         </div>
       </div>
       <div class="mt-2">
-        <strong>Тема:</strong> {{ c.summary }}<br>
-        <strong>Опис:</strong> {{ c.description }}
+        <strong>Опис:</strong> {{ c.description }}<br>
+
+        <ng-container *ngIf="c.summary">
+          <strong>Тема:</strong> {{ c.summary }}<br>
+        </ng-container>
+
+        <ng-container *ngIf="c.attachedDocumentUrl">
+          <strong>Документ:</strong>
+          <button (click)="downloadAttachment(c.attachedDocumentUrl)">Завантажити файл</button>
+        </ng-container>
+
+        <ng-container *ngIf="c.meetingLink">
+          <strong>Зустріч:</strong>
+          <a [href]="c.meetingLink" target="_blank">Перейти до зустрічі</a>
+        </ng-container>
       </div>
     </li>
   </ul>
