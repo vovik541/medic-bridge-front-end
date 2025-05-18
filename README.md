@@ -64,3 +64,8 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 npm install bootstrap jquery popper.js
 npm install @fullcalendar/core @fullcalendar/angular @fullcalendar/core @fullcalendar/timegrid @fullcalendar/interaction
 npm install --save-dev @types/fullcalendar
+npm install @stomp/stompjs sockjs-client
+npm install --save-dev @types/sockjs-client
+npm install global
+npm ls @stomp/stompjs
+npm install sockjs-client@1.5.1

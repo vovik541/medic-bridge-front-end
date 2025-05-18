@@ -28,6 +28,7 @@ export class UserComponent implements OnInit {
   searchForm!: FormGroup;
   doctors: SpecialistDto[] = [];
   doctorTypes: string[] = [];
+  languages: string[] = [];
   loading = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
@@ -36,10 +37,13 @@ export class UserComponent implements OnInit {
     this.searchForm = this.fb.group({
       city: ['Київ'],
       language: ['Українська'],
-      doctorType: ['']
+      doctorType: [''],
+      priceFrom: [100],
+      priceTo: [300]
     });
 
     this.loadDoctorTypes();
+    this.loadLanguages();
   }
 
   loadDoctorTypes(): void {
@@ -48,12 +52,23 @@ export class UserComponent implements OnInit {
         next: (types) => {
           this.doctorTypes = types;
           if (types.length > 0) {
-            this.searchForm.patchValue({ doctorType: types[0] }); // встановлюємо перший тип за замовчуванням
+            this.searchForm.patchValue({ doctorType: types[0] });
           }
         },
-        error: () => {
-          alert('Не вдалося завантажити спеціалізації');
-        }
+        error: () => alert('Не вдалося завантажити спеціалізації')
+      });
+  }
+
+  loadLanguages(): void {
+    this.http.get<string[]>(`${environment.apiUrl}/commons/languages-types`)
+      .subscribe({
+        next: (langs) => {
+          this.languages = langs;
+          if (langs.length > 0) {
+            this.searchForm.patchValue({ language: langs[0] });
+          }
+        },
+        error: () => alert('Не вдалося завантажити мови')
       });
   }
 

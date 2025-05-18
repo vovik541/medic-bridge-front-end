@@ -1,21 +1,53 @@
 <section class="container my-5">
-  <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline mb-3">
-    <input formControlName="city" class="form-control mr-2 mb-2" placeholder="Місто">
-    <input formControlName="language" class="form-control mr-2 mb-2" placeholder="Мова">
+  <div class="d-flex justify-content-center">
+    <form 
+      [formGroup]="searchForm" 
+      (ngSubmit)="onSearch()" 
+      class="row g-3 align-items-end p-4 bg-light rounded shadow-sm w-100" 
+      style="max-width: 1200px;"
+    >
+      <div class="col">
+        <label class="form-label mb-1" for="city">Місто</label>
+        <input id="city" formControlName="city" class="form-control" placeholder="Віддалено">
+      </div>
 
-    <select formControlName="doctorType" class="form-control mr-2 mb-2">
-      <option *ngFor="let type of doctorTypes" [value]="type">{{ type }}</option>
-    </select>
+      <div class="col">
+        <label class="form-label mb-1" for="language">Мова консультації</label>
+        <select id="language" formControlName="language" class="form-control">
+          <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+        </select>
+      </div>
 
-    <button type="submit" class="btn btn-primary mb-2">Пошук</button>
-  </form>
+      <div class="col">
+        <label class="form-label mb-1" for="doctorType">Спеціалізація</label>
+        <select id="doctorType" formControlName="doctorType" class="form-control">
+          <option *ngFor="let type of doctorTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div class="col">
+        <label class="form-label mb-1" for="priceFrom">Вартість від (грн)</label>
+        <input id="priceFrom" type="number" class="form-control" placeholder="від..." formControlName="priceFrom" step="20">
+      </div>
+
+      <div class="col">
+        <label class="form-label mb-1" for="priceTo">Вартість до (грн)</label>
+        <input id="priceTo" type="number" class="form-control" placeholder="до..." formControlName="priceTo" step="20">
+      </div>
+
+      <div class="col-auto">
+        <label class="form-label invisible">Пошук</label>
+        <button type="submit" class="btn btn-primary w-100">Пошук</button>
+      </div>
+    </form>
+  </div>
 
   <div *ngIf="loading" class="text-center my-3">
     <p>Завантаження...</p>
   </div>
 
-  <ul *ngIf="doctors.length">
-    <li *ngFor="let doctor of doctors" class="mb-3 p-3 border rounded d-flex align-items-center">
+  <ul *ngIf="doctors.length" class="mt-4">
+    <li *ngFor="let doctor of doctors" class="mb-4 p-4 border rounded d-flex align-items-start">
       <img *ngIf="doctor.imageUrl" [src]="doctor.imageUrl"
            alt="Фото {{ doctor.firstName }} {{ doctor.lastName }}"
            class="rounded-circle me-3"
@@ -28,6 +60,7 @@
           <strong>Логін:</strong> {{ doctor.login }}<br>
           <strong>Дата реєстрації:</strong> {{ doctor.registrationDate | date:'mediumDate' }}
         </p>
+        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel sapien a justo cursus mollis.</p>
         <a [routerLink]="['/user/specialist', doctor.doctorType, doctor.id]" class="btn btn-sm btn-outline-primary">
           Переглянути профіль
         </a>
@@ -35,7 +68,7 @@
     </li>
   </ul>
 
-  <div *ngIf="!loading && doctors.length === 0" class="text-muted">
+  <div *ngIf="!loading && doctors.length === 0" class="text-muted mt-4 text-center">
     <p>Немає результатів за обраними фільтрами.</p>
   </div>
 </section>
