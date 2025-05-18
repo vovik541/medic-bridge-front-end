@@ -47,10 +47,10 @@ export class LoginModalComponent {
 
 
   open() {
-    this.modal.nativeElement.style.display = 'block';
+    this.modal.nativeElement.classList.remove('visually-hidden');
   }
 
   close() {
-    this.modal.nativeElement.style.display = 'none';
+    this.modal.nativeElement.classList.add('visually-hidden');
   }
 }

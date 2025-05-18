@@ -64,10 +64,13 @@
           <strong>Логін:</strong> {{ doctor.login }}<br>
           <strong>Дата реєстрації:</strong> {{ doctor.registrationDate | date:'mediumDate' }}
         </p>
-        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel sapien a justo cursus mollis.</p>
-        <a [routerLink]="['/user/specialist', doctor.doctorType, doctor.id]" class="btn btn-sm btn-outline-primary">
+        <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel sapien a justo cursus mollis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel sapien a justo cursus mollis.</p>
+        <a *ngIf="getUserRoles().length" [routerLink]="['/user/specialist', doctor.doctorType, doctor.id]" class="btn btn-sm btn-outline-primary">
           Переглянути профіль
         </a>
+        <p class="mb-1" *ngIf="!getUserRoles().length">
+          <strong>Для перегляду профілю потрібно зареєструватися</strong>
+        </p>
       </div>
     </li>
   </ul>

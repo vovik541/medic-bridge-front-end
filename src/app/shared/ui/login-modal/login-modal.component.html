@@ -1,32 +1,32 @@
-<div #lModalLogin class="modal-register-wrapper">
-  <div>
-    <div style="background-color: aqua;">
-      <div>
-        <div>
-          <!-- LOGIN FORM -->
-          <div>
-            <div>
-              <h1>Login</h1>
-              <p>Sign In to your account</p>
-              <form [formGroup]="form" (ngSubmit)="onSubmitLogin()">
-                <div>
-                  <label>Email:</label>
-                  <input type="email" formControlName="email" placeholder="Email">
-                </div>
-                <div>
-                  <label>Password:</label>
-                  <input type="password" formControlName="password" placeholder="Password">
-                </div>
-                <div>
-                  <button type="submit">Login</button>
-                  <button type="button">Forgot password?</button>
-                </div>
-              </form>
-              <button (click)="close()" type="button">Close</button>
-            </div>
-          </div>
+<div #lModalLogin class="login-overlay position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-start visually-hidden"
+     style="background-color: rgba(0, 0, 0, 0.6); z-index: 1050;">
+  <div class="login-modal bg-white rounded shadow p-4 mt-5 position-relative" style="width: 100%; max-width: 400px;">
+    <button (click)="close()" type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Close"></button>
+    <h3 class="text-center text-primary mb-3">Вхід до BridgeMedic</h3>
+    <form [formGroup]="form" (ngSubmit)="onSubmitLogin()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" type="email" formControlName="email" class="form-control" placeholder="example@domain.com" />
+        <div *ngIf="form.controls.email.invalid && form.controls.email.touched" class="text-danger small">
+          Введіть коректний email.
         </div>
       </div>
-    </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Пароль</label>
+        <input id="password" type="password" formControlName="password" class="form-control" placeholder="********" />
+        <div *ngIf="form.controls.password.invalid && form.controls.password.touched" class="text-danger small">
+          Пароль обов’язковий.
+        </div>
+      </div>
+
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Увійти</button>
+      </div>
+
+      <div class="text-center mb-2">
+        <a href="#" class="text-decoration-none">Забули пароль?</a>
+      </div>
+    </form>
   </div>
 </div>

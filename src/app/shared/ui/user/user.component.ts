@@ -116,4 +116,13 @@ export class UserComponent implements OnInit {
       this.updatePaginatedDoctors();
     }
   }
+
+    getUserRoles(): string[] {
+    const rolesJson = localStorage.getItem('roles');
+    return rolesJson ? JSON.parse(rolesJson) : [];
+  }
+
+  hasRole(role: string): boolean {
+    return this.getUserRoles().includes(role.toUpperCase());
+  }
 }
