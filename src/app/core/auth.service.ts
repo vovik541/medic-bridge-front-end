@@ -13,6 +13,7 @@ export interface AuthenticationRequest {
 export interface AuthenticationResponse {
   access_token: string;
   refresh_token: string;
+  roles: string[];
 }
 
 export interface RegisterRequest {
@@ -37,9 +38,10 @@ export class AuthService {
   login(request: AuthenticationRequest): Observable<AuthenticationResponse> {
     return this.http.post<AuthenticationResponse>(environment.apiUrl + '/auth/authenticate', request).pipe(
       tap((res: AuthenticationResponse) => {
-        if (res.access_token && res.refresh_token) {
+        if (res.access_token && res.refresh_token && res.roles) {
           localStorage.setItem('access_token', res.access_token);
           localStorage.setItem('refresh_token', res.refresh_token);
+          localStorage.setItem('roles', JSON.stringify(res.roles));
         }
       })
     );
@@ -48,9 +50,10 @@ export class AuthService {
   register(req: RegisterRequest): Observable<AuthenticationResponse> {
     return this.http.post<AuthenticationResponse>(`${environment.apiUrl}/auth/register`, req).pipe(
       tap((res: AuthenticationResponse) => {
-        if (res.access_token && res.refresh_token) {
+        if (res.access_token && res.refresh_token && res.roles) {
           localStorage.setItem('access_token', res.access_token);
           localStorage.setItem('refresh_token', res.refresh_token);
+          localStorage.setItem('roles', JSON.stringify(res.roles));
         }
       })
     );
@@ -61,11 +64,13 @@ export class AuthService {
       next: () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('roles');
         this.router.navigate(['/']);
       },
       error: () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('roles');
         this.router.navigate(['/']);
       }
     });

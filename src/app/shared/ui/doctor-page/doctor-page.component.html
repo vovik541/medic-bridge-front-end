@@ -1,5 +1,5 @@
 <section class="consultation-block">
-  <h2> Очікують підтвердження</h2>
+  <h2>⚠️ Очікують підтвердження</h2>
   <div *ngIf="unapproved?.length; else noUnapproved">
     <div class="consultation-card" *ngFor="let c of unapproved">
       <div class="user-info">
@@ -10,8 +10,13 @@
         </div>
       </div>
       <div class="consultation-info">
-        <p><strong>Час:</strong> {{ c.start | date:'short' }}</p>
+        <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
         <p><strong>Статус:</strong> {{ c.status }}</p>
+        <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
+        <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
+        <p *ngIf="c.attachedDocumentUrl">
+          <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')">Завантажити файл</button>
+        </p>
         <button class="action-button" (click)="openConfirmModal(c)">Підтвердити</button>
       </div>
     </div>

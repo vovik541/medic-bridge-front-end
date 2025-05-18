@@ -1,0 +1,39 @@
+<div class="mt-5">
+  <h4>Мої консультації</h4>
+
+  <ul class="list-group" *ngIf="consultations.length; else noConsultations">
+    <li *ngFor="let c of consultations" class="list-group-item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ c.doctor.firstName }} {{ c.doctor.lastName }}</strong><br>
+          <small>Email: {{ c.doctor.email }}</small>
+        </div>
+        <div class="text-end">
+          <span class="badge bg-info">{{ c.status }}</span><br>
+          <small>{{ c.start | date:'short' }} — {{ c.end | date:'short' }}</small>
+        </div>
+      </div>
+      <div class="mt-2">
+        <strong>Опис:</strong> {{ c.description }}<br>
+
+        <ng-container *ngIf="c.summary">
+          <strong>Тема:</strong> {{ c.summary }}<br>
+        </ng-container>
+
+        <ng-container *ngIf="c.attachedDocumentUrl">
+          <strong>Документ:</strong>
+          <button (click)="downloadAttachment(c.attachedDocumentUrl)">Завантажити файл</button>
+        </ng-container>
+
+        <ng-container *ngIf="c.meetingLink">
+          <strong>Зустріч:</strong>
+          <a [href]="c.meetingLink" target="_blank">Перейти до зустрічі</a>
+        </ng-container>
+      </div>
+    </li>
+  </ul>
+
+  <ng-template #noConsultations>
+    <p class="text-muted">У вас ще немає запланованих консультацій.</p>
+  </ng-template>
+</div>

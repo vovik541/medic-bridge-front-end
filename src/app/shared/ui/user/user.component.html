@@ -1,78 +1,41 @@
-<form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline mb-3">
-  <input formControlName="city" class="form-control mr-2 mb-2" placeholder="Місто">
-  <input formControlName="language" class="form-control mr-2 mb-2" placeholder="Мова">
-  <input formControlName="doctorType" class="form-control mr-2 mb-2" placeholder="Спеціалізація">
-  <button type="submit" class="btn btn-primary mb-2">Пошук</button>
-</form>
+<section class="container my-5">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="form-inline mb-3">
+    <input formControlName="city" class="form-control mr-2 mb-2" placeholder="Місто">
+    <input formControlName="language" class="form-control mr-2 mb-2" placeholder="Мова">
 
-<div *ngIf="loading" class="text-center my-3">
-  <p>Завантаження...</p>
-</div>
+    <select formControlName="doctorType" class="form-control mr-2 mb-2">
+      <option *ngFor="let type of doctorTypes" [value]="type">{{ type }}</option>
+    </select>
 
-<ul *ngIf="doctors.length">
-  <li *ngFor="let doctor of doctors" class="mb-3 p-3 border rounded d-flex align-items-center">
-    <img *ngIf="doctor.imageUrl" [src]="doctor.imageUrl"
-         alt="Фото {{ doctor.firstName }} {{ doctor.lastName }}"
-         class="rounded-circle me-3"
-         width="64" height="64" />
+    <button type="submit" class="btn btn-primary mb-2">Пошук</button>
+  </form>
 
-    <div>
-      <h5 class="mb-1">{{ doctor.firstName }} {{ doctor.lastName }}</h5>
-      <p class="mb-1">
-        <strong>Email:</strong> {{ doctor.email }}<br>
-        <strong>Логін:</strong> {{ doctor.login }}<br>
-        <strong>Дата реєстрації:</strong> {{ doctor.registrationDate | date:'mediumDate' }}
-      </p>
-      <a [routerLink]="['/user/specialist', doctor.doctorType, doctor.id]" class="btn btn-sm btn-outline-primary">
-        Переглянути профіль
-      </a>
-    </div>
-    <div>
-        Lorem ipsum dolor sit amet. Vel reiciendis culpa et ipsam repellat ad tenetur quia aut dolor laborum! Et nisi quia a consequuntur dolores in accusamus quidem et eligendi commodi et voluptatum sunt qui dolores illum ex officiis voluptas? Ut doloribus consectetur aut quas consequatur id rerum eaque aut iusto necessitatibus eos temporibus nulla. Non velit illo qui doloribus reprehenderit et molestiae soluta. Ut dolor nihil quo dolore soluta id exercitationem laborum et rerum consectetur eum quisquam maiores ab sunt impedit ex ipsa dolores. Non error quia ad fuga explicabo id eaque voluptatem. Et earum iusto hic necessitatibus nulla cum labore atque sit consectetur dignissimos est blanditiis harum.
-    </div>
-  </li>
-</ul>
+  <div *ngIf="loading" class="text-center my-3">
+    <p>Завантаження...</p>
+  </div>
 
-<div *ngIf="!loading && doctors.length === 0" class="text-muted">
-  <p>Немає результатів за обраними фільтрами.</p>
-</div>
+  <ul *ngIf="doctors.length">
+    <li *ngFor="let doctor of doctors" class="mb-3 p-3 border rounded d-flex align-items-center">
+      <img *ngIf="doctor.imageUrl" [src]="doctor.imageUrl"
+           alt="Фото {{ doctor.firstName }} {{ doctor.lastName }}"
+           class="rounded-circle me-3"
+           width="64" height="64" />
 
-<div class="mt-5">
-  <h4>Мої консультації</h4>
-
-  <ul class="list-group" *ngIf="consultations.length; else noConsultations">
-    <li *ngFor="let c of consultations" class="list-group-item">
-      <div class="d-flex justify-content-between align-items-center">
-        <div>
-          <strong>{{ c.doctor.firstName }} {{ c.doctor.lastName }}</strong><br>
-          <small>Email: {{ c.doctor.email }}</small>
-        </div>
-        <div class="text-end">
-          <span class="badge bg-info">{{ c.status }}</span><br>
-          <small>{{ c.start | date:'short' }} — {{ c.end | date:'short' }}</small>
-        </div>
-      </div>
-      <div class="mt-2">
-        <strong>Опис:</strong> {{ c.description }}<br>
-
-        <ng-container *ngIf="c.summary">
-          <strong>Тема:</strong> {{ c.summary }}<br>
-        </ng-container>
-
-        <ng-container *ngIf="c.attachedDocumentUrl">
-          <strong>Документ:</strong>
-          <button (click)="downloadAttachment(c.attachedDocumentUrl)">Завантажити файл</button>
-        </ng-container>
-
-        <ng-container *ngIf="c.meetingLink">
-          <strong>Зустріч:</strong>
-          <a [href]="c.meetingLink" target="_blank">Перейти до зустрічі</a>
-        </ng-container>
+      <div>
+        <h5 class="mb-1">{{ doctor.firstName }} {{ doctor.lastName }}</h5>
+        <p class="mb-1">
+          <strong>Email:</strong> {{ doctor.email }}<br>
+          <strong>Логін:</strong> {{ doctor.login }}<br>
+          <strong>Дата реєстрації:</strong> {{ doctor.registrationDate | date:'mediumDate' }}
+        </p>
+        <a [routerLink]="['/user/specialist', doctor.doctorType, doctor.id]" class="btn btn-sm btn-outline-primary">
+          Переглянути профіль
+        </a>
       </div>
     </li>
   </ul>
 
-  <ng-template #noConsultations>
-    <p class="text-muted">У вас ще немає запланованих консультацій.</p>
-  </ng-template>
-</div>
+  <div *ngIf="!loading && doctors.length === 0" class="text-muted">
+    <p>Немає результатів за обраними фільтрами.</p>
+  </div>
+</section>

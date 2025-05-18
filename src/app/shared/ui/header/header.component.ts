@@ -4,10 +4,11 @@ import { AuthService } from '../../../core/auth.service';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { RegisterModalComponent } from '../register-modal/register-modal.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [LoginModalComponent, RegisterModalComponent, RouterModule],
+  imports: [LoginModalComponent, RegisterModalComponent, RouterModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -34,5 +35,12 @@ export class HeaderComponent {
   onLoginClick() {
     this.loginClick.emit();
   }
+  getUserRoles(): string[] {
+    const rolesJson = localStorage.getItem('roles');
+    return rolesJson ? JSON.parse(rolesJson) : [];
+  }
 
+  hasRole(role: string): boolean {
+    return this.getUserRoles().includes(role.toUpperCase());
+  }
 }
