@@ -1,110 +1,104 @@
-<section class="consultation-block">
-  <h2>⚠️ Очікують підтвердження</h2>
-  <div *ngIf="unapproved?.length; else noUnapproved">
-    <div class="consultation-card" *ngFor="let c of unapproved">
-      <div class="user-info">
-        <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar">
-        <div>
-          <p><strong>{{ c.user.firstName }} {{ c.user.lastName }}</strong></p>
-          <p>{{ c.user.email }} | {{ c.user.login }}</p>
+<section class="container my-5">
+  <div class="card p-4 shadow-sm border-0">
+    <h2 class="text-primary mb-4">Очікують підтвердження</h2>
+    <div *ngIf="unapproved?.length; else noUnapproved">
+      <div class="mb-3" *ngFor="let c of unapproved">
+        <div class="d-flex align-items-start bg-light p-3 rounded">
+          <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar" class="rounded-circle me-3" width="64" height="64">
+          <div class="flex-grow-1">
+            <h5>{{ c.user.firstName }} {{ c.user.lastName }}</h5>
+            <a [routerLink]="['/user/chat']" class="btn btn-primary btn-lg mx-2">Розпочати чат</a>
+            <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
+            <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
+            <p><strong>Статус:</strong> {{ c.status }}</p>
+            <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
+            <p *ngIf="c.attachedDocumentUrl">
+              <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')" class="btn btn-sm btn-outline-secondary">Завантажити файл</button>
+            </p>
+            <button class="btn btn-success btn-sm mt-2" (click)="openConfirmModal(c)">Підтвердити</button>
+            <button class="btn btn-success btn-sm mt-2">Скасувати</button>
+          </div>
         </div>
       </div>
-      <div class="consultation-info">
-        <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
-        <p><strong>Статус:</strong> {{ c.status }}</p>
-        <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
-        <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
-        <p *ngIf="c.attachedDocumentUrl">
-          <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')">Завантажити файл</button>
-        </p>
-        <button class="action-button" (click)="openConfirmModal(c)">Підтвердити</button>
-      </div>
     </div>
+    <ng-template #noUnapproved><p class="text-muted">Немає консультацій, що очікують підтвердження.</p></ng-template>
   </div>
-  <ng-template #noUnapproved><p>Немає консультацій, що очікують підтвердження.</p></ng-template>
-</section>
 
-<section class="consultation-block">
-  <h2>Відхилені/прострочені консультації</h2>
-  <div *ngIf="rejected?.length; else noRejected">
-    <div class="consultation-card" *ngFor="let c of rejected">
-      <div class="user-info">
-        <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar">
-        <div>
-          <p><strong>{{ c.user.firstName }} {{ c.user.lastName }}</strong></p>
-          <p>{{ c.user.email }} | {{ c.user.login }}</p>
+  <div class="card p-4 shadow-sm border-0 mt-4">
+    <h2 class="text-danger mb-4">Відхилені/прострочені консультації</h2>
+    <div *ngIf="rejected?.length; else noRejected">
+      <div class="mb-3" *ngFor="let c of rejected">
+        <div class="d-flex align-items-start bg-light p-3 rounded">
+          <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar" class="rounded-circle me-3" width="64" height="64">
+          <div>
+            <h5>{{ c.user.firstName }} {{ c.user.lastName }}</h5>
+            <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
+            <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
+            <p><strong>Статус:</strong> {{ c.status }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment }}</p>
+          </div>
         </div>
       </div>
-      <div class="consultation-info">
-        <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
-        <p><strong>Статус:</strong> {{ c.status }}</p>
-        <p><strong>Коментар:</strong> {{ c.doctorComment }}</p>
-      </div>
     </div>
+    <ng-template #noRejected><p class="text-muted">Немає відхилених консультацій.</p></ng-template>
   </div>
-  <ng-template #noRejected><p>Немає відхилених консультацій.</p></ng-template>
-</section>
 
-<section class="consultation-block">
-  <h2> Затверджені консультації</h2>
-  <div *ngIf="approved?.length; else noApproved">
-    <div class="consultation-card" *ngFor="let c of approved">
-      <div class="user-info">
-        <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar">
-        <div>
-          <p><strong>{{ c.user.firstName }} {{ c.user.lastName }}</strong></p>
-          <p>{{ c.user.email }} | {{ c.user.login }}</p>
+  <div class="card p-4 shadow-sm border-0 mt-4">
+    <h2 class="text-success mb-4">Затверджені консультації</h2>
+    <div *ngIf="approved?.length; else noApproved">
+      <div class="mb-3" *ngFor="let c of approved">
+        <div class="d-flex align-items-start bg-light p-3 rounded">
+          <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar" class="rounded-circle me-3" width="64" height="64">
+          <div class="flex-grow-1">
+            <h5>{{ c.user.firstName }} {{ c.user.lastName }}</h5>
+            <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
+            <p><strong>Час:</strong> {{ c.start | date:'short' }}</p>
+            <p><strong>Статус:</strong> {{ c.status }}</p>
+            <button class="btn btn-outline-danger btn-sm mt-2" (click)="openCancelModal(c)">Скасувати</button>
+          </div>
         </div>
       </div>
-      <div class="consultation-info">
-        <p><strong>Час:</strong> {{ c.start | date:'short' }}</p>
-        <p><strong>Статус:</strong> {{ c.status }}</p>
-        <button class="action-button cancel" (click)="openCancelModal(c)">Скасувати</button>
-      </div>
     </div>
+    <ng-template #noApproved><p class="text-muted">Немає затверджених консультацій.</p></ng-template>
   </div>
-  <ng-template #noApproved><p>Немає затверджених консультацій.</p></ng-template>
-</section>
 
-<section class="consultation-block">
-  <h2> Консультації, які потрібно оцінити</h2>
-  <div *ngIf="toReview?.length; else noToReview">
-    <div class="consultation-card highlight" *ngFor="let c of toReview">
-      <div class="user-info">
-        <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar">
-        <div>
-          <p><strong>{{ c.user.firstName }} {{ c.user.lastName }}</strong></p>
-          <p>{{ c.user.email }} | {{ c.user.login }}</p>
+  <div class="card p-4 shadow-sm border-0 mt-4">
+    <h2 class="text-warning mb-4">Консультації, які потрібно оцінити</h2>
+    <div *ngIf="toReview?.length; else noToReview">
+      <div class="mb-3" *ngFor="let c of toReview">
+        <div class="d-flex align-items-start bg-light p-3 rounded">
+          <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar" class="rounded-circle me-3" width="64" height="64">
+          <div>
+            <h5>{{ c.user.firstName }} {{ c.user.lastName }}</h5>
+            <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
+            <p><strong>Час:</strong> {{ c.start | date:'short' }}</p>
+            <p><strong>Статус:</strong> {{ c.status }}</p>
+            <button class="btn btn-outline-primary btn-sm mt-2" (click)="openReviewModal(c)">Оцінити</button>
+          </div>
         </div>
       </div>
-      <div class="consultation-info">
-        <p><strong>Час:</strong> {{ c.start | date:'short' }}</p>
-        <p><strong>Статус:</strong> {{ c.status }}</p>
-        <button class="action-button review" (click)="openReviewModal(c)">Оцінити</button>
-      </div>
     </div>
+    <ng-template #noToReview><p class="text-muted">Усі консультації вже оцінені.</p></ng-template>
   </div>
-  <ng-template #noToReview><p>Усі консультації вже оцінені.</p></ng-template>
-</section>
 
-<section class="consultation-block">
-  <h2>Всі минулі консультації</h2>
-  <div *ngIf="past?.length; else noPast">
-    <div class="consultation-card" *ngFor="let c of past">
-      <div class="user-info">
-        <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar">
-        <div>
-          <p><strong>{{ c.user.firstName }} {{ c.user.lastName }}</strong></p>
-          <p>{{ c.user.email }} | {{ c.user.login }}</p>
+  <div class="card p-4 shadow-sm border-0 mt-4">
+    <h2 class="text-dark mb-4">Всі минулі консультації</h2>
+    <div *ngIf="past?.length; else noPast">
+      <div class="mb-3" *ngFor="let c of past">
+        <div class="d-flex align-items-start bg-light p-3 rounded">
+          <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar" class="rounded-circle me-3" width="64" height="64">
+          <div>
+            <h5>{{ c.user.firstName }} {{ c.user.lastName }}</h5>
+            <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
+            <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
+            <p><strong>Статус:</strong> {{ c.status }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment }}</p>
+            <button *ngIf="c.status === 'CONFIRMED'" class="btn btn-outline-primary btn-sm mt-2" (click)="openReviewModal(c)">Оцінити</button>
+          </div>
         </div>
       </div>
-      <div class="consultation-info">
-        <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
-        <p><strong>Статус:</strong> {{ c.status }}</p>
-        <p><strong>Коментар:</strong> {{ c.doctorComment }}</p>
-        <button *ngIf="c.status === 'CONFIRMED'" class="action-button review" (click)="openReviewModal(c)">Оцінити</button>
-      </div>
     </div>
+    <ng-template #noPast><p class="text-muted">Немає минулих консультацій.</p></ng-template>
   </div>
-  <ng-template #noPast><p>Немає минулих консультацій.</p></ng-template>
 </section>

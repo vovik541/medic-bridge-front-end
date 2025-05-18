@@ -1,5 +1,4 @@
-// specialist-detail.component.ts
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarOptions } from '@fullcalendar/core';
@@ -18,13 +17,13 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./specialist-detail.component.css']
 })
 export class SpecialistDetailComponent {
+  @ViewChild('appointmentModal', { static: false }) appointmentModal!: ElementRef;
+
   calendarOptions!: CalendarOptions;
   specialistId!: number;
   doctorType!: string;
   specialistInfo: any;
 
-  // modal state
-  showModal = false;
   selectedStart!: string;
   selectedEnd!: string;
   description = '';
@@ -73,7 +72,15 @@ export class SpecialistDetailComponent {
     this.description = '';
     this.summary = '';
     this.selectedFile = null;
-    this.showModal = true;
+
+    // Відображення модального вікна
+    setTimeout(() => {
+      this.appointmentModal?.nativeElement?.classList?.remove('visually-hidden');
+    });
+  }
+
+  closeModal(): void {
+    this.appointmentModal?.nativeElement?.classList?.add('visually-hidden');
   }
 
   onFileSelected(event: Event): void {
@@ -81,10 +88,6 @@ export class SpecialistDetailComponent {
     if (input.files && input.files[0]) {
       this.selectedFile = input.files[0];
     }
-  }
-
-  closeModal(): void {
-    this.showModal = false;
   }
 
   submitAppointment(): void {

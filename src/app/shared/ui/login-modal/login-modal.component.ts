@@ -37,7 +37,7 @@ export class LoginModalComponent {
     this.auth.login(credentials).subscribe({
     next: (res) => {
       this.close();
-      this.router.navigate(['/user']);
+      this.router.navigate(['/user/search']);
     },
     error: () => {
       alert('Login failed');

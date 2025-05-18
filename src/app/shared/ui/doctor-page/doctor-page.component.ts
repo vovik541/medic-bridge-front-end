@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { DoctorConsultationService, ConsultationForDoctorDto } from './doctor-consultation.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-doctor-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './doctor-page.component.html',
   styleUrls: ['./doctor-page.component.css']
 })
@@ -17,10 +18,12 @@ export class DoctorPageComponent implements OnInit {
   past: ConsultationForDoctorDto[] = [];
   rejected: ConsultationForDoctorDto[] = [];
   toReview: ConsultationForDoctorDto[] = [];
-
+  cancelFormIndex: number | null = null;
+  cancelComment: string = '';
   constructor(
     private consultationService: DoctorConsultationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
