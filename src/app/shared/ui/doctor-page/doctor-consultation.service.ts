@@ -40,7 +40,7 @@ export class DoctorConsultationService {
   }
 
   getUnapprovedOngoing(): Observable<ConsultationForDoctorDto[]> {
-    return this.http.get<ConsultationForDoctorDto[]>(`${environment.apiUrl}/doctor/appointments/ongoing-unapproved`);
+    return this.http.get<ConsultationForDoctorDto[]>(`${environment.apiUrl}/doctor/appointments/ongoing-upApproved`);
   }
 
   getPast(): Observable<ConsultationForDoctorDto[]> {
@@ -50,4 +50,7 @@ export class DoctorConsultationService {
   getRejected(): Observable<ConsultationForDoctorDto[]> {
     return this.http.get<ConsultationForDoctorDto[]>(`${environment.apiUrl}/doctor/appointments/rejected`);
   }
+  getToReview(): Observable<ConsultationForDoctorDto[]> {
+  return this.http.get<ConsultationForDoctorDto[]>(`${environment.apiUrl}/doctor/appointments/to-review`);
+}
 }
