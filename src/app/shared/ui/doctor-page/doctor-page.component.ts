@@ -20,6 +20,11 @@ export class DoctorPageComponent implements OnInit {
   toReview: ConsultationForDoctorDto[] = [];
   cancelFormIndex: number | null = null;
   cancelComment: string = '';
+  confirmFormIndex: number | null = null;
+  confirmComment: string = '';
+  confirmLink: string = '';
+
+
   constructor(
     private consultationService: DoctorConsultationService,
     private http: HttpClient,
@@ -67,4 +72,28 @@ export class DoctorPageComponent implements OnInit {
       alert('Не вдалося завантажити файл');
     });
   }
+  toggleConfirmForm(index: number): void {
+  this.confirmFormIndex = this.confirmFormIndex === index ? null : index;
+  this.confirmComment = '';
+  this.confirmLink = '';
+}
+
+submitApprove(appointmentId: number, comment: string, appointmentLink: string): void {
+  const formData = new FormData();
+  formData.append('appointmentId', appointmentId.toString());
+  formData.append('message', comment);
+  formData.append('appointmentLink', appointmentLink);
+
+  this.http.post(`${environment.apiUrl}/appointments/approve-appointment`, formData)
+    .subscribe({
+      next: () => {
+        this.unapproved = this.unapproved.filter(c => c.id !== appointmentId);
+        this.confirmFormIndex = null;
+      },
+      error: () => {
+        alert('Не вдалося підтвердити консультацію.');
+      }
+    });
+}
+
 }

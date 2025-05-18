@@ -16,8 +16,24 @@
             <p *ngIf="c.attachedDocumentUrl">
               <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')" class="btn btn-sm btn-outline-secondary">Завантажити файл</button>
             </p>
-            <button class="btn btn-success btn-sm mt-2" (click)="openConfirmModal(c)">Підтвердити</button>
-            <button class="btn btn-success btn-sm mt-2">Скасувати</button>
+            <button class="btn btn-success btn-sm mt-2" (click)="toggleConfirmForm(c.id)">Підтвердити</button>
+            <button class="btn btn-danger btn-sm mt-2" (click)="openCancelModal(c)">Скасувати</button>
+
+            <div *ngIf="confirmFormIndex === c.id" class="mt-3">
+              <div class="mb-2">
+                <label class="form-label">Коментар:</label>
+                <textarea #textareaRef class="form-control" rows="2" required></textarea>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Посилання на консультацію:</label>
+                <input type="url" #inputRef class="form-control" required>
+              </div>
+              <button class="btn btn-outline-success btn-sm"
+                      (click)="submitApprove(c.id, textareaRef.value, inputRef.value)">
+                Підтвердити консультацію
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
