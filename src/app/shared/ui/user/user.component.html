@@ -8,7 +8,7 @@
     >
       <div class="col">
         <label class="form-label mb-1" for="city">Місто</label>
-        <input id="city" formControlName="city" class="form-control" placeholder="Віддалено">
+        <input id="city" formControlName="city" class="form-control" placeholder="Наприклад: Київ">
       </div>
 
       <div class="col">
@@ -27,12 +27,12 @@
 
       <div class="col">
         <label class="form-label mb-1" for="priceFrom">Вартість від (грн)</label>
-        <input id="priceFrom" type="number" class="form-control" placeholder="від..." formControlName="priceFrom" step="20">
+        <input id="priceFrom" type="number" class="form-control" placeholder="від..." formControlName="priceFrom" step="20" min="0">
       </div>
 
       <div class="col">
         <label class="form-label mb-1" for="priceTo">Вартість до (грн)</label>
-        <input id="priceTo" type="number" class="form-control" placeholder="до..." formControlName="priceTo" step="20">
+        <input id="priceTo" type="number" class="form-control" placeholder="до..." formControlName="priceTo" step="20" min="0">
       </div>
 
       <div class="col-auto">
@@ -46,8 +46,12 @@
     <p>Завантаження...</p>
   </div>
 
-  <ul *ngIf="doctors.length" class="mt-4">
-    <li *ngFor="let doctor of doctors" class="mb-4 p-4 border rounded d-flex align-items-start">
+  <div *ngIf="doctors.length" class="mt-4 mb-2 text-center">
+    <p class="text-muted">Знайдено лікарів: {{ doctors.length }}</p>
+  </div>
+
+  <ul *ngIf="doctors.length" class="mt-2">
+    <li *ngFor="let doctor of paginatedDoctors" class="mb-4 p-4 border rounded d-flex align-items-start">
       <img *ngIf="doctor.imageUrl" [src]="doctor.imageUrl"
            alt="Фото {{ doctor.firstName }} {{ doctor.lastName }}"
            class="rounded-circle me-3"
@@ -67,6 +71,20 @@
       </div>
     </li>
   </ul>
+
+  <nav *ngIf="doctors.length > pageSize" class="mt-4 d-flex justify-content-center">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="currentPage = currentPage - 1">Попередня</button>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="currentPage === i + 1">
+        <button class="page-link" (click)="currentPage = i + 1">{{ i + 1 }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button class="page-link" (click)="currentPage = currentPage + 1">Наступна</button>
+      </li>
+    </ul>
+  </nav>
 
   <div *ngIf="!loading && doctors.length === 0" class="text-muted mt-4 text-center">
     <p>Немає результатів за обраними фільтрами.</p>

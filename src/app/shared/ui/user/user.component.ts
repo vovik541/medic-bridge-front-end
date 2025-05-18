@@ -27,15 +27,21 @@ interface SpecialistDto {
 export class UserComponent implements OnInit {
   searchForm!: FormGroup;
   doctors: SpecialistDto[] = [];
+  paginatedDoctors: SpecialistDto[] = [];
   doctorTypes: string[] = [];
   languages: string[] = [];
   loading = false;
+
+  // Параметри пагінації
+  pageSize: number = 5;
+  currentPage: number = 1;
+  totalPages: number = 0;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({
-      city: ['Київ'],
+      city: [''],
       language: ['Українська'],
       doctorType: [''],
       priceFrom: [100],
@@ -47,29 +53,27 @@ export class UserComponent implements OnInit {
   }
 
   loadDoctorTypes(): void {
-    this.http.get<string[]>(`${environment.apiUrl}/commons/specialist-types`)
-      .subscribe({
-        next: (types) => {
-          this.doctorTypes = types;
-          if (types.length > 0) {
-            this.searchForm.patchValue({ doctorType: types[0] });
-          }
-        },
-        error: () => alert('Не вдалося завантажити спеціалізації')
-      });
+    this.http.get<string[]>(`${environment.apiUrl}/commons/specialist-types`).subscribe({
+      next: (types) => {
+        this.doctorTypes = types;
+        if (types.length > 0) {
+          this.searchForm.patchValue({ doctorType: types[0] });
+        }
+      },
+      error: () => alert('Не вдалося завантажити спеціалізації')
+    });
   }
 
   loadLanguages(): void {
-    this.http.get<string[]>(`${environment.apiUrl}/commons/languages-types`)
-      .subscribe({
-        next: (langs) => {
-          this.languages = langs;
-          if (langs.length > 0) {
-            this.searchForm.patchValue({ language: langs[0] });
-          }
-        },
-        error: () => alert('Не вдалося завантажити мови')
-      });
+    this.http.get<string[]>(`${environment.apiUrl}/commons/languages-types`).subscribe({
+      next: (langs) => {
+        this.languages = langs;
+        if (langs.length > 0) {
+          this.searchForm.patchValue({ language: langs[0] });
+        }
+      },
+      error: () => alert('Не вдалося завантажити мови')
+    });
   }
 
   onSearch(): void {
@@ -87,6 +91,9 @@ export class UserComponent implements OnInit {
     ).subscribe({
       next: (res) => {
         this.doctors = res.specialists;
+        this.currentPage = 1;
+        this.totalPages = Math.ceil(this.doctors.length / this.pageSize);
+        this.updatePaginatedDoctors();
         this.loading = false;
       },
       error: () => {
@@ -94,5 +101,19 @@ export class UserComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  updatePaginatedDoctors(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedDoctors = this.doctors.slice(startIndex, endIndex);
+  }
+
+  // викликаємо цей метод при кліку на пагінацію
+  setPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedDoctors();
+    }
   }
 }
