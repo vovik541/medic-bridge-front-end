@@ -19,10 +19,12 @@
       <div class="mt-2">
         <p class="mb-1"><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
 
-        <ng-container *ngIf="c.summary">
-          <p class="mb-1"><strong>Тема:</strong> {{ c.summary }}</p>
+        <ng-container *ngIf="c.comment">
+          <p class="mb-1"><strong>Коментар від лікаря:</strong> {{ c.comment }}</p>
         </ng-container>
-
+        <ng-container *ngIf="c.summary">
+          <p class="mb-1"><strong>Підсумок зустрічі:</strong> {{ c.summary }}</p>
+        </ng-container>
         <ng-container *ngIf="c.attachedDocumentUrl">
           <p class="mb-1">
             <strong>Документ:</strong>

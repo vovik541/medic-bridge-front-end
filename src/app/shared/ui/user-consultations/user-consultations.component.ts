@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // ✅ потрібен для пайпів (наприклад, 'date')
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -25,12 +25,13 @@ interface ConsultationDto {
   meetingLink?: string;
   attachedDocumentUrl?: string;
   doctor: UserDto;
+  comment: string;
 }
 
 @Component({
   selector: 'app-user-consultations',
   standalone: true,
-  imports: [CommonModule], // ✅ додаємо тут
+  imports: [CommonModule],
   templateUrl: './user-consultations.component.html',
   styleUrls: ['./user-consultations.component.css']
 })

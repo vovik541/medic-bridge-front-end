@@ -73,7 +73,6 @@ export class SpecialistDetailComponent {
     this.summary = '';
     this.selectedFile = null;
 
-    // Відображення модального вікна
     setTimeout(() => {
       this.appointmentModal?.nativeElement?.classList?.remove('visually-hidden');
     });

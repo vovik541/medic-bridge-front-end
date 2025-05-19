@@ -32,7 +32,6 @@ export class UserComponent implements OnInit {
   languages: string[] = [];
   loading = false;
 
-  // Параметри пагінації
   pageSize: number = 5;
   currentPage: number = 1;
   totalPages: number = 0;
@@ -109,7 +108,6 @@ export class UserComponent implements OnInit {
     this.paginatedDoctors = this.doctors.slice(startIndex, endIndex);
   }
 
-  // викликаємо цей метод при кліку на пагінацію
   setPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
