@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
@@ -19,7 +20,7 @@ export class SettingsComponent implements OnInit {
   userData: any;
   imagePreviewUrl: string | null = null;
 
-  constructor(private http: HttpClient, private fb: FormBuilder) {}
+  constructor(private http: HttpClient, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.loadUserData();
@@ -69,7 +70,7 @@ export class SettingsComponent implements OnInit {
 
       this.http.post(`${environment.apiUrl}/users/upload-photo`, formData).subscribe(() => {
         alert('Фото оновлено');
-        this.loadUserData(); // оновити зображення
+        this.loadUserData();
       });
     }
   }

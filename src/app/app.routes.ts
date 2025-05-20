@@ -12,6 +12,7 @@ import { DoctorPageComponent } from './shared/ui/doctor-page/doctor-page.compone
 import { ChatPageComponent } from './shared/ui/chat-page/chat-page.component';
 import { UserConsultationsComponent } from './shared/ui/user-consultations/user-consultations.component';
 import { HomePageComponent } from './shared/ui/home-page/home-page.component';
+import { BecomeDoctorComponent } from './shared/ui/become-doctor/become-doctor.component';
 
 export const routes: Routes = [
     { path: '', component: HomePageComponent },
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: 'user/specialist/:specialistType/:id', loadComponent: () => import('../app/shared/ui/specialist-detail/specialist-detail.component').then(m => m.SpecialistDetailComponent)},
     { path: 'user/consultations', component: UserConsultationsComponent },
     { path: 'user/search', component: UserComponent },
+    { path: 'user/bacome-doctor', component: BecomeDoctorComponent},
     { path: 'user/chat', component: ChatPageComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'support', component: SupportComponent },

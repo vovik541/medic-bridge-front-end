@@ -1,0 +1,36 @@
+<div class="container my-5">
+  <h2 class="mb-4">Подати заявку на підтвердження статусу лікаря</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    
+    <div class="mb-3">
+      <label class="form-label">Спеціалізація</label>
+      <select class="form-select" formControlName="doctorType" required>
+        <option value="">-- Оберіть спеціалізацію --</option>
+        <option *ngFor="let type of doctorTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Додаткова мова</label>
+      <select class="form-select" formControlName="additionalLanguage" required>
+        <option value="">-- Оберіть мову --</option>
+        <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Про себе</label>
+      <textarea class="form-control" formControlName="aboutMeDescription" rows="4"
+        placeholder="Короткий опис про вас як лікаря..." required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Документ (необов’язково)</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)">
+    </div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid">
+      Подати заявку
+    </button>
+  </form>
+</div>
