@@ -17,8 +17,17 @@
               <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')" class="btn btn-sm btn-outline-secondary">Завантажити файл</button>
             </p>
             <button class="btn btn-success btn-sm mt-2" (click)="toggleConfirmForm(c.id)">Підтвердити</button>
-            <button class="btn btn-danger btn-sm mt-2" (click)="openCancelModal(c)">Скасувати</button>
-
+            <button class="btn btn-danger btn-sm mt-2" (click)="toggleCancelForm(c.id)">Скасувати</button>
+            <div *ngIf="cancelFormIndex === c.id" class="mt-3">
+              <div class="mb-2">
+                <label class="form-label">Причина скасування:</label>
+                <textarea #cancelTextarea class="form-control" rows="2" required></textarea>
+              </div>
+              <button class="btn btn-outline-danger btn-sm"
+                      (click)="submitCancel(c.id, cancelTextarea.value)">
+                Підтвердити скасування
+              </button>
+            </div>
             <div *ngIf="confirmFormIndex === c.id" class="mt-3">
               <div class="mb-2">
                 <label class="form-label">Коментар:</label>

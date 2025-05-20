@@ -24,7 +24,6 @@ export class DoctorPageComponent implements OnInit {
   confirmComment: string = '';
   confirmLink: string = '';
 
-
   constructor(
     private consultationService: DoctorConsultationService,
     private http: HttpClient,
@@ -95,5 +94,25 @@ submitApprove(appointmentId: number, comment: string, appointmentLink: string): 
       }
     });
 }
+toggleCancelForm(index: number): void {
+  this.cancelFormIndex = this.cancelFormIndex === index ? null : index;
+  this.cancelComment = '';
+}
+submitCancel(appointmentId: number, comment: string): void {
+  const formData = new FormData();
+  formData.append('appointmentId', appointmentId.toString());
+  formData.append('message', comment);
 
+  this.http.post(`${environment.apiUrl}/appointments/cancel-appointment`, formData)
+    .subscribe({
+      next: () => {
+        this.unapproved = this.unapproved.filter(c => c.id !== appointmentId);
+        this.approved = this.approved.filter(c => c.id !== appointmentId);
+        this.cancelFormIndex = null;
+      },
+      error: () => {
+        alert('Не вдалося скасувати консультацію.');
+      }
+    });
+}
 }
