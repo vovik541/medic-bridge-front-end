@@ -61,7 +61,8 @@
             <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
             <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
             <p><strong>Статус:</strong> {{ c.status }}</p>
-            <p><strong>Коментар:</strong> {{ c.doctorComment }}</p>
+            <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
           </div>
         </div>
       </div>
@@ -80,6 +81,11 @@
             <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
             <p><strong>Час:</strong> {{ c.start | date:'short' }}</p>
             <p><strong>Статус:</strong> {{ c.status }}</p>
+            <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
+            <p *ngIf="c.attachedDocumentUrl">
+              <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')" class="btn btn-sm btn-outline-secondary">Завантажити файл</button>
+            </p>
             <button class="btn btn-outline-danger btn-sm mt-2" (click)="openCancelModal(c)">Скасувати</button>
           </div>
         </div>
@@ -99,6 +105,11 @@
             <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
             <p><strong>Час:</strong> {{ c.start | date:'short' }}</p>
             <p><strong>Статус:</strong> {{ c.status }}</p>
+            <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
+            <p *ngIf="c.attachedDocumentUrl">
+              <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')" class="btn btn-sm btn-outline-secondary">Завантажити файл</button>
+            </p>
             <button class="btn btn-outline-primary btn-sm mt-2" (click)="openReviewModal(c)">Оцінити</button>
           </div>
         </div>
@@ -119,6 +130,11 @@
             <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
             <p><strong>Статус:</strong> {{ c.status }}</p>
             <p><strong>Коментар:</strong> {{ c.doctorComment }}</p>
+            <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
+            <p *ngIf="c.attachedDocumentUrl">
+              <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')" class="btn btn-sm btn-outline-secondary">Завантажити файл</button>
+            </p>
             <button *ngIf="c.status === 'CONFIRMED'" class="btn btn-outline-primary btn-sm mt-2" (click)="openReviewModal(c)">Оцінити</button>
           </div>
         </div>
