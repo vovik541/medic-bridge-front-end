@@ -75,6 +75,9 @@ export class DoctorPageComponent implements OnInit {
   this.confirmFormIndex = this.confirmFormIndex === index ? null : index;
   this.confirmComment = '';
   this.confirmLink = '';
+
+  this.cancelFormIndex = null;
+  this.cancelComment = '';
 }
 
 submitApprove(appointmentId: number, comment: string, appointmentLink: string): void {
@@ -97,6 +100,10 @@ submitApprove(appointmentId: number, comment: string, appointmentLink: string): 
 toggleCancelForm(index: number): void {
   this.cancelFormIndex = this.cancelFormIndex === index ? null : index;
   this.cancelComment = '';
+
+  this.confirmFormIndex = null;
+  this.confirmComment = '';
+  this.confirmLink = '';
 }
 submitCancel(appointmentId: number, comment: string): void {
   const formData = new FormData();
