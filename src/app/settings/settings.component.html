@@ -1,33 +1,61 @@
-<h3 class="mb-3">Налаштування профілю</h3>
+<section class="container my-5 d-flex justify-content-center">
+  <div class="card shadow-sm rounded p-4 w-100" style="max-width: 450px;">
+    <h3 class="mb-4 text-primary text-center">Налаштування профілю</h3>
 
-<div *ngIf="userData" class="mb-4">
-  <img *ngIf="imagePreviewUrl" [src]="imagePreviewUrl" alt="Аватар" class="rounded-circle mb-2" width="100" height="100" />
-  <p><strong>{{ userData.firstName }} {{ userData.lastName }}</strong></p>
-  <p>Email: {{ userData.email }}</p>
-  <p>Логін: {{ userData.login }}</p>
-</div>
+    <div *ngIf="userData" class="text-center mb-4">
+      <img *ngIf="imagePreviewUrl" [src]="imagePreviewUrl" alt="Аватар" class="rounded-circle shadow-sm mb-2" width="96" height="96">
+      <h5 class="mb-1">{{ userData.firstName }} {{ userData.lastName }}</h5>
+      <small class="text-muted d-block">Email: {{ userData.email }}</small>
+      <small class="text-muted d-block">Логін: {{ userData.login }}</small>
+    </div>
 
-<hr>
+    <hr class="my-4">
 
-<form [formGroup]="userForm" (ngSubmit)="onUpdateInfo()" class="mb-4">
-  <h5>Зміна особистої інформації</h5>
-  <input type="text" formControlName="firstName" class="form-control mb-2" placeholder="Ім'я">
-  <input type="text" formControlName="lastName" class="form-control mb-2" placeholder="Прізвище">
-  <input type="email" formControlName="email" class="form-control mb-2" placeholder="Email">
-  <input type="text" formControlName="login" class="form-control mb-2" placeholder="Логін">
-  <button class="btn btn-primary">Зберегти зміни</button>
-</form>
+    <form [formGroup]="userForm" (ngSubmit)="onUpdateInfo()" class="mb-4">
+      <h6 class="text-secondary mb-3">Зміна особистої інформації</h6>
+      <div class="mb-3">
+        <label for="firstName" class="form-label">Ім'я</label>
+        <input type="text" id="firstName" formControlName="firstName" class="form-control form-control-sm">
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Прізвище</label>
+        <input type="text" id="lastName" formControlName="lastName" class="form-control form-control-sm">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Електронна пошта</label>
+        <input type="email" id="email" formControlName="email" class="form-control form-control-sm">
+      </div>
+      <div class="mb-3">
+        <label for="login" class="form-label">Логін</label>
+        <input type="text" id="login" formControlName="login" class="form-control form-control-sm">
+      </div>
+      <div class="d-grid">
+        <button class="btn btn-outline-primary btn-sm">Зберегти зміни</button>
+      </div>
+    </form>
 
-<form (submit)="onImageSelected($event)" class="mb-4">
-  <h5>Оновити фото</h5>
-  <input type="file" (change)="onImageSelected($event)" class="form-control mb-2">
-</form>
+    <form (submit)="onImageSelected($event)" class="mb-4">
+      <h6 class="text-secondary mb-3">Оновити фото</h6>
+      <input type="file" (change)="onImageSelected($event)" class="form-control form-control-sm">
+    </form>
 
-<form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="mb-4">
-  <h5>Зміна пароля</h5>
-  <input type="password" formControlName="oldPassword" class="form-control mb-2" placeholder="Старий пароль">
-  <input type="password" formControlName="newPassword" class="form-control mb-2" placeholder="Новий пароль">
-  <button class="btn btn-warning">Оновити пароль</button>
-</form>
+    <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="mb-4">
+      <h6 class="text-secondary mb-3">Зміна пароля</h6>
+      <div class="mb-3">
+        <label for="oldPassword" class="form-label">Старий пароль</label>
+        <input type="password" id="oldPassword" formControlName="oldPassword" class="form-control form-control-sm">
+      </div>
+      <div class="mb-3">
+        <label for="newPassword" class="form-label">Новий пароль</label>
+        <input type="password" id="newPassword" formControlName="newPassword" class="form-control form-control-sm">
+      </div>
+      <div class="d-grid">
+        <button class="btn btn-warning btn-sm">Оновити пароль</button>
+      </div>
+    </form>
 
-<a class="nav-link" [routerLink]="['/user/bacome-doctor']">Хочу стати лікарем!</a>
+    <div class="text-center mt-3">
+      <a class="btn btn-success btn-sm px-4" [routerLink]="['/user/bacome-doctor']">Хочу стати лікарем!</a>
+    </div>
+  </div>
+</section>
