@@ -31,7 +31,12 @@
         <li class="nav-item" *ngIf="hasRole('SPECIALIST')">
           <a class="nav-link" [routerLink]="['/doctor']">Для Лікаря</a>
         </li>
-
+        <li class="nav-item" *ngIf="hasRole('SUPPORT')">
+          <a class="nav-link" [routerLink]="['/support']">Для підтримки</a>
+        </li>
+        <li class="nav-item" *ngIf="hasRole('ADMIN')">
+          <a class="nav-link" [routerLink]="['/admin']">Для адміністратора</a>
+        </li>
         <li class="nav-item" *ngIf="getUserRoles().length">
           <a class="nav-link" [routerLink]="['/settings']">Налаштування</a>
         </li>
