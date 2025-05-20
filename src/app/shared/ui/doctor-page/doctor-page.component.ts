@@ -98,6 +98,7 @@ submitApprove(appointmentId: number, comment: string, appointmentLink: string): 
     });
 }
 toggleCancelForm(index: number): void {
+  console.log('Toggle cancel for index', index);
   this.cancelFormIndex = this.cancelFormIndex === index ? null : index;
   this.cancelComment = '';
 
@@ -106,6 +107,7 @@ toggleCancelForm(index: number): void {
   this.confirmLink = '';
 }
 submitCancel(appointmentId: number, comment: string): void {
+  console.log('Cancelling', appointmentId, 'with comment', comment);
   const formData = new FormData();
   formData.append('appointmentId', appointmentId.toString());
   formData.append('message', comment);

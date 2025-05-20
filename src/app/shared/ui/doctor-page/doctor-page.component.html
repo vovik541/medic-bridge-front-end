@@ -51,26 +51,6 @@
   </div>
 
   <div class="card p-4 shadow-sm border-0 mt-4">
-    <h2 class="text-danger mb-4">Відхилені/прострочені консультації</h2>
-    <div *ngIf="rejected?.length; else noRejected">
-      <div class="mb-3" *ngFor="let c of rejected">
-        <div class="d-flex align-items-start bg-light p-3 rounded">
-          <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar" class="rounded-circle me-3" width="64" height="64">
-          <div>
-            <h5>{{ c.user.firstName }} {{ c.user.lastName }}</h5>
-            <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
-            <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
-            <p><strong>Статус:</strong> {{ c.status }}</p>
-            <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
-            <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <ng-template #noRejected><p class="text-muted">Немає відхилених консультацій.</p></ng-template>
-  </div>
-
-  <div class="card p-4 shadow-sm border-0 mt-4">
     <h2 class="text-success mb-4">Затверджені консультації</h2>
     <div *ngIf="approved?.length; else noApproved">
       <div class="mb-3" *ngFor="let c of approved">
@@ -86,7 +66,18 @@
             <p *ngIf="c.attachedDocumentUrl">
               <button (click)="downloadAttachment(c.attachedDocumentUrl, 'document')" class="btn btn-sm btn-outline-secondary">Завантажити файл</button>
             </p>
-            <button class="btn btn-outline-danger btn-sm mt-2" (click)="openCancelModal(c)">Скасувати</button>
+            <button class="btn btn-outline-danger btn-sm mt-2" (click)="toggleCancelForm(c.id)">Скасувати</button>
+
+            <div *ngIf="cancelFormIndex === c.id" class="mt-3">
+              <div class="mb-2">
+                <label class="form-label">Причина скасування:</label>
+                <textarea #cancelTextarea class="form-control" rows="2" required></textarea>
+              </div>
+              <button class="btn btn-outline-danger btn-sm"
+                      (click)="submitCancel(c.id, cancelTextarea.value)">
+                Підтвердити скасування
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -141,5 +132,25 @@
       </div>
     </div>
     <ng-template #noPast><p class="text-muted">Немає минулих консультацій.</p></ng-template>
+  </div>
+
+  <div class="card p-4 shadow-sm border-0 mt-4">
+    <h2 class="text-danger mb-4">Відхилені/прострочені консультації</h2>
+    <div *ngIf="rejected?.length; else noRejected">
+      <div class="mb-3" *ngFor="let c of rejected">
+        <div class="d-flex align-items-start bg-light p-3 rounded">
+          <img *ngIf="c.user.imageUrl" [src]="c.user.imageUrl" alt="Avatar" class="rounded-circle me-3" width="64" height="64">
+          <div>
+            <h5>{{ c.user.firstName }} {{ c.user.lastName }}</h5>
+            <p class="text-muted mb-1">{{ c.user.email }} | {{ c.user.login }}</p>
+            <p><strong>Час:</strong> {{ c.start | date:'short' }} - {{ c.end | date:'short' }}</p>
+            <p><strong>Статус:</strong> {{ c.status }}</p>
+            <p><strong>Опис:</strong> {{ c.description || 'немає опису' }}</p>
+            <p><strong>Коментар:</strong> {{ c.doctorComment || 'коментар відсутній' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noRejected><p class="text-muted">Немає відхилених консультацій.</p></ng-template>
   </div>
 </section>
