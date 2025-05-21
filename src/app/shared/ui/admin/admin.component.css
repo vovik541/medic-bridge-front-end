@@ -1,0 +1,14 @@
+.table th,
+.table td {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table img {
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.card {
+  margin-bottom: 1.5rem;
+}
