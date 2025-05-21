@@ -70,9 +70,19 @@
 </table>
 
 <nav *ngIf="totalPages > 1" class="mt-3">
-  <ul class="pagination mb-0">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="currentPage === 0">
+      <button class="page-link" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">«</button>
+    </li>
+
     <li class="page-item" *ngFor="let page of pagesArray()" [class.active]="page === currentPage">
-      <button class="page-link" (click)="goToPage(page)">{{ page + 1 }}</button>
+      <button class="page-link" (click)="goToPage(page)">
+        {{ page + 1 }}
+      </button>
+    </li>
+
+    <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+      <button class="page-link" (click)="goToPage(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">»</button>
     </li>
   </ul>
 </nav>

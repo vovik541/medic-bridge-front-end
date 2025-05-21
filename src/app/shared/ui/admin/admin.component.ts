@@ -75,7 +75,16 @@ export class AdminComponent implements OnInit {
   }
 
   pagesArray(): number[] {
-    return Array(this.totalPages).fill(0).map((_, i) => i);
+    const delta = 2;
+    const left = Math.max(0, this.currentPage - delta);
+    const right = Math.min(this.totalPages - 1, this.currentPage + delta);
+    const range: number[] = [];
+  
+    for (let i = left; i <= right; i++) {
+      range.push(i);
+    }
+  
+    return range;
   }
 
   blockUser(userId: number): void {
