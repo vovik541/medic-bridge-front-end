@@ -6,7 +6,7 @@
         <input id="loginInput" type="text" formControlName="login" class="form-control" placeholder="hillernz">
       </div>
       <div class="col-md-4">
-        <label for="emailInput" class="form-label mb-1">Поштова адреса</label>
+        <label for="emailInput" class="form-label mb-1">Поштова скринька</label>
         <input id="emailInput" type="email" formControlName="email" class="form-control" placeholder="hillernz@gmail.com">
       </div>
       <div class="col-md-3">
@@ -25,12 +25,12 @@
       <table class="table table-bordered table-hover mb-0">
         <thead class="table-light">
           <tr>
-            <th>Image</th>
-            <th (click)="sortBy('login')" style="cursor: pointer;">Login {{ sortIcon('login') }}</th>
-            <th (click)="sortBy('email')" style="cursor: pointer;">Email {{ sortIcon('email') }}</th>
+            <th>Аватар</th>
+            <th (click)="sortBy('login')" style="cursor: pointer;">Логін {{ sortIcon('login') }}</th>
+            <th (click)="sortBy('email')" style="cursor: pointer;">Поштова скринька {{ sortIcon('email') }}</th>
             <th>Roles</th>
-            <th>Blocked</th>
-            <th>Actions</th>
+            <th (click)="sortBy('isLocked')" style="cursor: pointer;">Заблокований {{ sortIcon('email') }}</th>
+            <th>Дії</th>
           </tr>
         </thead>
         <tbody>
@@ -39,30 +39,31 @@
             <td>{{ user.login }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.roles?.join(', ') }}</td>
-            <td>{{ user.isLocked ? 'Yes' : 'No' }}</td>
+            <td>{{ user.isLocked ? 'Так' : 'Ні' }}</td>
             <td>
               <div class="d-flex flex-column gap-1">
-                <button *ngIf="!user.isLocked" class="btn btn-sm btn-warning" (click)="blockUser(user.id)">Block</button>
-                <button *ngIf="user.isLocked" class="btn btn-sm btn-success" (click)="unblockUser(user.id)">Unblock</button>
+                <button *ngIf="!user.isLocked" class="btn btn-sm btn-warning" (click)="blockUser(user.id)">Заблокувати</button>
+                <button *ngIf="user.isLocked" class="btn btn-sm btn-success" (click)="unblockUser(user.id)">Розблокувати</button>
 
                 <select class="form-select form-select-sm w-auto" (change)="onRoleChange($event, user.id)">
-                  <option disabled selected>Add Role</option>
-                  <option value="USER">USER</option>
-                  <option value="SPECIALIST">SPECIALIST</option>
-                  <option value="ADMIN">ADMIN</option>
+                  <option disabled selected>Додати Роль</option>
+                  <option value="USER">Користувач</option>
+                  <option value="SPECIALIST">Лікар</option>
+                  <option value="SUPPORT">Технічна підтримка</option>
+                  <option value="ADMIN">Адміністратор</option>
                 </select>
 
                 <div class="d-flex gap-1 align-items-center mt-1">
                   <select class="form-select form-select-sm w-auto"
                           [(ngModel)]="user.selectedRoleToRemove"
                           name="selectedRole-{{ user.id }}">
-                    <option disabled selected>Select Role to Remove</option>
+                    <option disabled selected>Виберіть роль для видалення</option>
                     <option *ngFor="let role of user.roles" [value]="role">{{ role }}</option>
                   </select>
                   <button class="btn btn-sm btn-outline-danger"
                           [disabled]="!user.selectedRoleToRemove"
                           (click)="removeRole(user.id, user.selectedRoleToRemove)">
-                    Remove
+                    Видалити
                   </button>
                 </div>
               </div>
