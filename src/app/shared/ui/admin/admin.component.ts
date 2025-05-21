@@ -18,7 +18,7 @@ export class AdminComponent implements OnInit {
   currentPage = 0;
   totalPages = 0;
   pageSize = 5;
-  sortField = 'login';
+  sortField: string = 'login';
   sortDirection: 'asc' | 'desc' = 'asc';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -35,6 +35,7 @@ export class AdminComponent implements OnInit {
 
   search(page: number = 0): void {
     const { login, email, role } = this.filterForm.value;
+
     let params = new HttpParams()
       .set('page', page)
       .set('size', this.pageSize)
@@ -45,7 +46,6 @@ export class AdminComponent implements OnInit {
     if (role) params = params.set('role', role);
 
     this.http.get<any>(`${environment.apiUrl}/admin/users`, { params }).subscribe(res => {
-      // додаємо selectedRoleToRemove як тимчасове поле
       this.users = res.content.map((user: any) => ({
         ...user,
         selectedRoleToRemove: null
@@ -53,44 +53,6 @@ export class AdminComponent implements OnInit {
       this.currentPage = res.number;
       this.totalPages = res.totalPages;
     });
-  }
-
-  changeRole(userId: number, newRole: string): void {
-    this.http.post(`${environment.apiUrl}/admin/add-role`, null, {
-      params: new HttpParams().set('userId', userId).set('newRole', newRole)
-    }).subscribe(() => this.search(this.currentPage));
-  }
-
-  removeRole(userId: number, role: string): void {
-    this.http.post(`${environment.apiUrl}/admin/remove-role`, null, {
-      params: new HttpParams().set('userId', userId).set('newRole', role)
-    }).subscribe(() => this.search(this.currentPage));
-  }
-
-  blockUser(userId: number): void {
-    this.http.post(`${environment.apiUrl}/admin/lock`, null, {
-      params: new HttpParams().set('userId', userId)
-    }).subscribe(() => this.search(this.currentPage));
-  }
-
-  unblockUser(userId: number): void {
-    this.http.post(`${environment.apiUrl}/admin/unlock`, null, {
-      params: new HttpParams().set('userId', userId)
-    }).subscribe(() => this.search(this.currentPage));
-  }
-
-  onRoleChange(event: Event, userId: number): void {
-    const select = event.target as HTMLSelectElement;
-    const newRole = select.value;
-    this.changeRole(userId, newRole);
-  }
-
-  goToPage(page: number): void {
-    this.search(page);
-  }
-
-  pagesArray(): number[] {
-    return Array(this.totalPages).fill(0).map((_, i) => i);
   }
 
   sortBy(field: string): void {
@@ -106,5 +68,43 @@ export class AdminComponent implements OnInit {
   sortIcon(field: string): string {
     if (this.sortField !== field) return '';
     return this.sortDirection === 'asc' ? '▲' : '▼';
+  }
+
+  goToPage(page: number): void {
+    this.search(page);
+  }
+
+  pagesArray(): number[] {
+    return Array(this.totalPages).fill(0).map((_, i) => i);
+  }
+
+  blockUser(userId: number): void {
+    this.http.post(`${environment.apiUrl}/admin/lock`, null, {
+      params: new HttpParams().set('userId', userId)
+    }).subscribe(() => this.search(this.currentPage));
+  }
+
+  unblockUser(userId: number): void {
+    this.http.post(`${environment.apiUrl}/admin/unlock`, null, {
+      params: new HttpParams().set('userId', userId)
+    }).subscribe(() => this.search(this.currentPage));
+  }
+
+  changeRole(userId: number, newRole: string): void {
+    this.http.post(`${environment.apiUrl}/admin/add-role`, null, {
+      params: new HttpParams().set('userId', userId).set('newRole', newRole)
+    }).subscribe(() => this.search(this.currentPage));
+  }
+
+  removeRole(userId: number, role: string): void {
+    this.http.post(`${environment.apiUrl}/admin/remove-role`, null, {
+      params: new HttpParams().set('userId', userId).set('newRole', role)
+    }).subscribe(() => this.search(this.currentPage));
+  }
+
+  onRoleChange(event: Event, userId: number): void {
+    const select = event.target as HTMLSelectElement;
+    const newRole = select.value;
+    this.changeRole(userId, newRole);
   }
 }

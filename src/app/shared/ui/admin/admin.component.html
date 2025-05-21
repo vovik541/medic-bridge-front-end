@@ -1,9 +1,24 @@
-<form [formGroup]="filterForm" (ngSubmit)="search()" class="mb-3 d-flex flex-wrap gap-2 align-items-start">
-  <input type="text" formControlName="login" class="form-control" placeholder="Login" style="max-width: 200px;">
-  <input type="email" formControlName="email" class="form-control" placeholder="Email" style="max-width: 250px;">
-  <input type="text" formControlName="role" class="form-control" placeholder="Role" style="max-width: 150px;">
-  <button type="submit" class="btn btn-primary">🔍 Search</button>
+<form [formGroup]="filterForm" (ngSubmit)="search()" class="card p-3 mb-4 shadow-sm border rounded-3 bg-light">
+  <div class="row gy-2 gx-3 align-items-center">
+    <div class="col-md-3">
+      <label for="loginInput" class="form-label mb-1">Логін користувача</label>
+      <input id="loginInput" type="text" formControlName="login" class="form-control" placeholder="hillernz">
+    </div>
+    <div class="col-md-4">
+      <label for="emailInput" class="form-label mb-1">Поштова адреса</label>
+      <input id="emailInput" type="email" formControlName="email" class="form-control" placeholder="hillernz@gmail.com">
+    </div>
+    <div class="col-md-3">
+      <label for="roleInput" class="form-label mb-1">Роль користувача</label>
+      <input id="roleInput" type="text" formControlName="role" class="form-control" placeholder="USER / ADMIN / SPECIALIST / SUPPORT">
+    </div>
+    <div class="col-md-2 d-grid">
+      <label class="form-label invisible">Пошук</label>
+      <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Пошук</button>
+    </div>
+  </div>
 </form>
+
 
 <table class="table table-bordered table-hover">
   <thead class="table-light">
