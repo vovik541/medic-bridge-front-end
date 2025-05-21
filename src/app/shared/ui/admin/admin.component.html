@@ -24,14 +24,31 @@
       <td>{{ user.roles?.join(', ') }}</td>
       <td>{{ user.isLocked ? 'Yes' : 'No' }}</td>
       <td>
-        <button class="btn btn-sm btn-warning me-1" (click)="blockUser(user.id)">Block</button>
-        <select class="form-select form-select-sm d-inline-block w-auto"
-                (change)="onRoleChange($event, user.id)">
-          <option disabled selected>Change Role</option>
-          <option value="USER">USER</option>
-          <option value="SPECIALIST">SPECIALIST</option>
-          <option value="ADMIN">ADMIN</option>
-        </select>
+        <div class="d-flex flex-column gap-1">
+          <button *ngIf="!user.isLocked" class="btn btn-sm btn-warning" (click)="blockUser(user.id)">Block</button>
+          <button *ngIf="user.isLocked" class="btn btn-sm btn-success" (click)="unblockUser(user.id)">Unblock</button>
+
+          <select class="form-select form-select-sm w-auto" (change)="onRoleChange($event, user.id)">
+            <option disabled selected>Add Role</option>
+            <option value="USER">USER</option>
+            <option value="SPECIALIST">SPECIALIST</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+
+          <div class="d-flex gap-1 align-items-center mt-1">
+            <select class="form-select form-select-sm w-auto"
+                    [(ngModel)]="user.selectedRoleToRemove"
+                    name="selectedRole-{{ user.id }}">
+              <option disabled selected>Select Role to Remove</option>
+              <option *ngFor="let role of user.roles" [value]="role">{{ role }}</option>
+            </select>
+            <button class="btn btn-sm btn-outline-danger"
+                    [disabled]="!user.selectedRoleToRemove"
+                    (click)="removeRole(user.id, user.selectedRoleToRemove)">
+              Remove
+            </button>
+          </div>
+        </div>
       </td>
     </tr>
   </tbody>

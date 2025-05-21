@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin',
+  standalone: true,
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, FormsModule, CommonModule]
 })
 export class AdminComponent implements OnInit {
   filterForm: FormGroup;
@@ -45,7 +45,11 @@ export class AdminComponent implements OnInit {
     if (role) params = params.set('role', role);
 
     this.http.get<any>(`${environment.apiUrl}/admin/users`, { params }).subscribe(res => {
-      this.users = res.content;
+      // додаємо selectedRoleToRemove як тимчасове поле
+      this.users = res.content.map((user: any) => ({
+        ...user,
+        selectedRoleToRemove: null
+      }));
       this.currentPage = res.number;
       this.totalPages = res.totalPages;
     });
@@ -57,10 +61,28 @@ export class AdminComponent implements OnInit {
     }).subscribe(() => this.search(this.currentPage));
   }
 
+  removeRole(userId: number, role: string): void {
+    this.http.post(`${environment.apiUrl}/admin/remove-role`, null, {
+      params: new HttpParams().set('userId', userId).set('newRole', role)
+    }).subscribe(() => this.search(this.currentPage));
+  }
+
   blockUser(userId: number): void {
     this.http.post(`${environment.apiUrl}/admin/lock`, null, {
       params: new HttpParams().set('userId', userId)
     }).subscribe(() => this.search(this.currentPage));
+  }
+
+  unblockUser(userId: number): void {
+    this.http.post(`${environment.apiUrl}/admin/unlock`, null, {
+      params: new HttpParams().set('userId', userId)
+    }).subscribe(() => this.search(this.currentPage));
+  }
+
+  onRoleChange(event: Event, userId: number): void {
+    const select = event.target as HTMLSelectElement;
+    const newRole = select.value;
+    this.changeRole(userId, newRole);
   }
 
   goToPage(page: number): void {
@@ -69,12 +91,6 @@ export class AdminComponent implements OnInit {
 
   pagesArray(): number[] {
     return Array(this.totalPages).fill(0).map((_, i) => i);
-  }
-
-  onRoleChange(event: Event, userId: number): void {
-    const select = event.target as HTMLSelectElement;
-    const newRole = select.value;
-    this.changeRole(userId, newRole);
   }
 
   sortBy(field: string): void {
