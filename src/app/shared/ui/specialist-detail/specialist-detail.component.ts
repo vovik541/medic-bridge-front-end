@@ -62,6 +62,8 @@ export class SpecialistDetailComponent {
         events,
         selectable: true,
         select: this.handleSlotSelect.bind(this),
+        allDaySlot: false,
+        contentHeight: 628,
       };
     });
   }
