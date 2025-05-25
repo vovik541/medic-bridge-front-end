@@ -55,7 +55,7 @@ export class DoctorPageComponent implements OnInit {
   }
 
   downloadAttachment(fileUrl: string, suggestedName: string = 'документ'): void {
-    this.http.get(`${environment.apiUrl}${fileUrl}`, {
+    this.http.get(`${environment.apiUrl}/files/${fileUrl}`, {
       responseType: 'blob',
     }).subscribe(blob => {
       const url = window.URL.createObjectURL(blob);

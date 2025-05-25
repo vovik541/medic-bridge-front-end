@@ -40,7 +40,7 @@ export class SupportComponent implements OnInit {
   approve(id: number): void {
     const formData = new FormData();
     formData.append('logId', id.toString());
-    formData.append('logId', this.comments[id] || '');
+    formData.append('logComment', this.comments[id] || '');
 
     this.http.get(`${environment.apiUrl}/support/approve-request`, { params: { logId: id.toString(), reviewComment: this.comments[id] } })
       .subscribe(() => {
