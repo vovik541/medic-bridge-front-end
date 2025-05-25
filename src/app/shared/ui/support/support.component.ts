@@ -54,4 +54,21 @@ export class SupportComponent implements OnInit {
         this.approvalLogs = this.approvalLogs.filter(log => log.approvalLogId !== id);
       });
   }
+      downloadFile(fileUrl: string, suggestedName: string = 'документ'): void {
+    this.http.get(`${environment.apiUrl}/files/${fileUrl}`, {
+      responseType: 'blob',
+    }).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = suggestedName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      console.error('Помилка при завантаженні файлу', error);
+      alert('Не вдалося завантажити файл');
+    });
+  }
 }
