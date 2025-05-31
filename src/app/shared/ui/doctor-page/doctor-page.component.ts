@@ -27,7 +27,7 @@ export class DoctorPageComponent implements OnInit {
   rescheduleFormIndex: number | null = null;
   rescheduleSelectedSlot: any;
   availableSlots: { [key: number]: any[] } = {};
-  
+
   constructor(
     private consultationService: DoctorConsultationService,
     private http: HttpClient,
@@ -150,23 +150,25 @@ submitCancel(appointmentId: number, comment: string): void {
   }
 
   submitReschedule(appointmentId: number): void {
-    if (!this.rescheduleSelectedSlot) return;
+  if (!this.rescheduleSelectedSlot) return;
 
-    const formData = new FormData();
-    formData.append('appointmentId', appointmentId.toString());
-    formData.append('startTime', this.rescheduleSelectedSlot.start);
-    formData.append('endTime', this.rescheduleSelectedSlot.end);
+  const payload = {
+    appointmentId,
+    newStart: this.rescheduleSelectedSlot.start,
+    newEnd: this.rescheduleSelectedSlot.end
+  };
 
-    this.http.post(`${environment.apiUrl}/appointments/reschedule`, formData)
-      .subscribe({
-        next: () => {
-          alert('Консультацію перенесено');
-          this.rescheduleFormIndex = null;
-          this.loadConsultations();
-        },
-        error: () => alert('Не вдалося перенести консультацію')
-      });
-  }
+  this.http.post(`${environment.apiUrl}/appointments/reschedule`, payload)
+    .subscribe({
+      next: () => {
+        alert('Консультацію перенесено');
+        this.rescheduleFormIndex = null;
+        this.loadConsultations();
+      },
+      error: () => alert('Не вдалося перенести консультацію')
+    });
+}
+
 
   trackBySlot(index: number, slot: any): string {
     return `${slot.start}-${slot.end}`;
