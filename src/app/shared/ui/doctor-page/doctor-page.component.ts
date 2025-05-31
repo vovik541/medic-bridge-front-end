@@ -5,10 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-doctor-page',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,FormsModule],
   templateUrl: './doctor-page.component.html',
   styleUrls: ['./doctor-page.component.css']
 })
@@ -23,7 +24,10 @@ export class DoctorPageComponent implements OnInit {
   confirmFormIndex: number | null = null;
   confirmComment: string = '';
   confirmLink: string = '';
-
+  rescheduleFormIndex: number | null = null;
+  rescheduleSelectedSlot: any;
+  availableSlots: { [key: number]: any[] } = {};
+  
   constructor(
     private consultationService: DoctorConsultationService,
     private http: HttpClient,
@@ -78,6 +82,7 @@ export class DoctorPageComponent implements OnInit {
 
   this.cancelFormIndex = null;
   this.cancelComment = '';
+  this.rescheduleFormIndex = null;
 }
 
 submitApprove(appointmentId: number, comment: string, appointmentLink: string): void {
@@ -105,6 +110,7 @@ toggleCancelForm(index: number): void {
   this.confirmFormIndex = null;
   this.confirmComment = '';
   this.confirmLink = '';
+  this.rescheduleFormIndex = null;
 }
 submitCancel(appointmentId: number, comment: string): void {
   console.log('Cancelling', appointmentId, 'with comment', comment);
@@ -124,4 +130,45 @@ submitCancel(appointmentId: number, comment: string): void {
       }
     });
 }
+
+  toggleRescheduleForm(consultation: ConsultationForDoctorDto): void {
+    this.rescheduleFormIndex = this.rescheduleFormIndex === consultation.id ? null : consultation.id;
+    this.rescheduleSelectedSlot = null;
+    const date = consultation.start;
+    this.loadAvailableSlots(consultation.id, date);
+    this.cancelFormIndex = null;
+    this.confirmFormIndex = null;
+  }
+
+  loadAvailableSlots(appointmentId: number, date: string): void {
+    this.http.get<any[]>(`${environment.apiUrl}/appointments/available/${appointmentId}`, {
+      params: { date }
+    }).subscribe({
+      next: slots => this.availableSlots[appointmentId] = slots,
+      error: err => console.error('Не вдалося завантажити слоти', err)
+    });
+  }
+
+  submitReschedule(appointmentId: number): void {
+    if (!this.rescheduleSelectedSlot) return;
+
+    const formData = new FormData();
+    formData.append('appointmentId', appointmentId.toString());
+    formData.append('startTime', this.rescheduleSelectedSlot.start);
+    formData.append('endTime', this.rescheduleSelectedSlot.end);
+
+    this.http.post(`${environment.apiUrl}/appointments/reschedule`, formData)
+      .subscribe({
+        next: () => {
+          alert('Консультацію перенесено');
+          this.rescheduleFormIndex = null;
+          this.loadConsultations();
+        },
+        error: () => alert('Не вдалося перенести консультацію')
+      });
+  }
+
+  trackBySlot(index: number, slot: any): string {
+    return `${slot.start}-${slot.end}`;
+  }
 }
