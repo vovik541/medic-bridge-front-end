@@ -52,5 +52,9 @@ export class DoctorConsultationService {
   }
   getToReview(): Observable<ConsultationForDoctorDto[]> {
   return this.http.get<ConsultationForDoctorDto[]>(`${environment.apiUrl}/doctor/appointments/to-review`);
-}
+  }
+  
+  getRescheduled(): Observable<ConsultationForDoctorDto[]> {
+    return this.http.get<ConsultationForDoctorDto[]>(`${environment.apiUrl}/doctor/appointments/rescheduled`);
+  }
 }

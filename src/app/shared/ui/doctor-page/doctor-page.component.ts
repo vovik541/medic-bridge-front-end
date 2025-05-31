@@ -19,6 +19,7 @@ export class DoctorPageComponent implements OnInit {
   past: ConsultationForDoctorDto[] = [];
   rejected: ConsultationForDoctorDto[] = [];
   toReview: ConsultationForDoctorDto[] = [];
+  rescheduled: ConsultationForDoctorDto[] = [];
   cancelFormIndex: number | null = null;
   cancelComment: string = '';
   confirmFormIndex: number | null = null;
@@ -44,6 +45,7 @@ export class DoctorPageComponent implements OnInit {
     this.consultationService.getPast().subscribe(data => this.past = data);
     this.consultationService.getRejected().subscribe(data => this.rejected = data);
     this.consultationService.getToReview().subscribe(data => this.toReview = data);
+    this.consultationService.getRescheduled().subscribe(data => this.rescheduled = data);
   }
 
   openConfirmModal(consultation: ConsultationForDoctorDto): void {
