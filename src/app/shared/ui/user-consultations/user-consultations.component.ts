@@ -37,6 +37,7 @@ interface ConsultationDto {
 })
 export class UserConsultationsComponent implements OnInit {
   consultations: ConsultationDto[] = [];
+  consultationsToBeApproved: ConsultationDto[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -50,6 +51,11 @@ export class UserConsultationsComponent implements OnInit {
         next: res => this.consultations = res.consultations,
         error: () => alert('Не вдалося завантажити консультації')
       });
+    this.http.get<{ consultations: ConsultationDto[] }>(`${environment.apiUrl}/appointments/to-approve`)
+    .subscribe({
+      next: res => this.consultationsToBeApproved = res.consultations,
+      error: () => alert('Не вдалося завантажити консультації для підтвердження')
+    });
   }
 
   downloadAttachment(fileUrl: string, suggestedName: string = 'документ'): void {
@@ -69,4 +75,21 @@ export class UserConsultationsComponent implements OnInit {
       alert('Не вдалося завантажити файл');
     });
   }
+
+  updateStatus(consultationId: number, newStatus: 'CONFIRMED' | 'CANCELED'): void {
+  const payload = {
+    appointmentId: consultationId,
+    newStatus
+  };
+
+  this.http.post(`${environment.apiUrl}/appointments/update-status-user-choice`, payload)
+    .subscribe({
+      next: () => {
+        this.consultationsToBeApproved = this.consultationsToBeApproved.filter(c => c.id !== consultationId);
+        alert('Статус консультації оновлено');
+        this.loadConsultations();
+      },
+      error: () => alert('Не вдалося оновити статус консультації')
+    });
+}
 }
