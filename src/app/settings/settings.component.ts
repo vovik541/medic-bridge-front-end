@@ -33,9 +33,11 @@ export class SettingsComponent implements OnInit {
     });
 
     this.passwordForm = this.fb.group({
-      oldPassword: [''],
-      newPassword: ['']
+      currentPassword: [''],
+      newPassword: [''],
+      confirmationPassword: ['']
     });
+
 
     this.imageForm = this.fb.group({
       image: ['']

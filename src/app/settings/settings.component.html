@@ -41,18 +41,27 @@
 
     <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="mb-4">
       <h6 class="text-secondary mb-3">Зміна пароля</h6>
+        
       <div class="mb-3">
-        <label for="oldPassword" class="form-label">Старий пароль</label>
-        <input type="password" id="oldPassword" formControlName="oldPassword" class="form-control form-control-sm">
+        <label for="currentPassword" class="form-label">Поточний пароль</label>
+        <input type="password" id="currentPassword" formControlName="currentPassword" class="form-control form-control-sm">
       </div>
+    
       <div class="mb-3">
         <label for="newPassword" class="form-label">Новий пароль</label>
         <input type="password" id="newPassword" formControlName="newPassword" class="form-control form-control-sm">
       </div>
+    
+      <div class="mb-3">
+        <label for="confirmationPassword" class="form-label">Підтвердження нового пароля</label>
+        <input type="password" id="confirmationPassword" formControlName="confirmationPassword" class="form-control form-control-sm">
+      </div>
+    
       <div class="d-grid">
         <button class="btn btn-warning btn-sm">Оновити пароль</button>
       </div>
     </form>
+
 
     <div class="text-center mt-3">
       <a class="btn btn-success btn-sm px-4" [routerLink]="['/user/bacome-doctor']">Хочу стати лікарем!</a>
