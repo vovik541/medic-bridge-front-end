@@ -28,6 +28,7 @@ export class DoctorPageComponent implements OnInit {
   rescheduleFormIndex: number | null = null;
   rescheduleSelectedSlot: any;
   availableSlots: { [key: number]: any[] } = {};
+  selectedRescheduleDate: { [key: number]: string } = {};
 
   constructor(
     private consultationService: DoctorConsultationService,
@@ -133,18 +134,33 @@ submitCancel(appointmentId: number, comment: string): void {
     });
 }
 
-  toggleRescheduleForm(consultation: ConsultationForDoctorDto): void {
-    this.rescheduleFormIndex = this.rescheduleFormIndex === consultation.id ? null : consultation.id;
-    this.rescheduleSelectedSlot = null;
-    const date = consultation.start;
-    this.loadAvailableSlots(consultation.id, date);
-    this.cancelFormIndex = null;
-    this.confirmFormIndex = null;
-  }
+toggleRescheduleForm(consultation: ConsultationForDoctorDto): void {
+  this.rescheduleFormIndex = this.rescheduleFormIndex === consultation.id ? null : consultation.id;
+  this.rescheduleSelectedSlot = null;
+
+  const initialDate = consultation.start.split('T')[0]; // YYYY-MM-DD
+  this.selectedRescheduleDate[consultation.id] = initialDate;
+
+  this.loadAvailableSlots(consultation.id, initialDate);
+
+  this.cancelFormIndex = null;
+  this.confirmFormIndex = null;
+}
+
+
+onRescheduleDateChange(appointmentId: number, newDate: string): void {
+  this.selectedRescheduleDate[appointmentId] = newDate;
+  this.loadAvailableSlots(appointmentId, newDate);
+  this.rescheduleSelectedSlot = null;
+}
+getInputValue(event: Event): string {
+  return (event.target as HTMLInputElement).value;
+}
 
   loadAvailableSlots(appointmentId: number, date: string): void {
+    var offsetDate = date + 'T00:00:00Z';
     this.http.get<any[]>(`${environment.apiUrl}/appointments/available/${appointmentId}`, {
-      params: { date }
+      params: { offsetDate  }
     }).subscribe({
       next: slots => this.availableSlots[appointmentId] = slots,
       error: err => console.error('Не вдалося завантажити слоти', err)
