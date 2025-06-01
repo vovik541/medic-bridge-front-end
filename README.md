@@ -1,5 +1,11 @@
 # MedicBridgeFrontEnd
 
+docker build -f Dockerfile.dev -t medic-bridge-front-end:0.0.1-SNAPSHOT .
+docker run --name bridgemedic-frontend -p 4200:4200 -v "${PWD}:/app" -v /app/node_modules medic-bridge-front-end:0.0.1-SNAPSHOT
+
+
+docker run -p 4200:4200 -v C:\Private\projects\augilar\medic-bridge-front-end:/app -v /app/node_modules medic-bridge-dev
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
 
 ## Development server
