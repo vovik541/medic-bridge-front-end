@@ -1,12 +1,12 @@
  .modal-login-wrapper {
-  display: none; /* приховано за замовчуванням */
+  display: none;
   position: fixed;
   z-index: 1050;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* прозорий фон */
+  background-color: rgba(0, 0, 0, 0.5);
   overflow: auto;
   padding: 2rem;
 }

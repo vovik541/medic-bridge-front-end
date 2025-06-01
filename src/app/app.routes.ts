@@ -28,9 +28,4 @@ export const routes: Routes = [
     { path: 'physician', component: PhysicianComponent },
     { path: 'settings', component: SettingsComponent },
     { path: 'doctor', component: DoctorPageComponent },
-    
-    // { path: 'login', component: LoginComponent },
-    // { path: 'dashboard', component: DashboardComponent },
-    // { path: 'register', component: RegisterComponent }
-    // { path: '', redirectTo: '/login', pathMatch: 'full' }
 ];

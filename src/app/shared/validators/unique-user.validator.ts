@@ -8,7 +8,7 @@ export function loginExistsValidator(service: LoginExistsValidatorService): Asyn
       debounceTime(400),
       switchMap(value => service.checkLogin(value)),
       map((exists: boolean) => exists ? { loginTaken: true } : null),
-      catchError(() => of(null)) // навіть якщо бекенд впаде — не зламає форму
+      catchError(() => of(null))
     );
   };
 }
