@@ -20,21 +20,35 @@
       <div class="mb-3">
         <label class="form-label" for="register-login">Логін</label>
         <input id="register-login" formControlName="login" type="text" class="form-control" placeholder="Введіть логін">
+        <div *ngIf="registerForm.get('login')?.hasError('loginTaken') && registerForm.get('login')?.touched" class="text-danger mt-1">
+            Цей логін вже використовується.
+        </div>
       </div>
 
       <div class="mb-3">
         <label class="form-label" for="register-email">Email</label>
         <input id="register-email" formControlName="email" type="email" class="form-control" placeholder="example@domain.com">
+        <div *ngIf="registerForm.get('email')?.hasError('emailTaken') && registerForm.get('email')?.touched" class="text-danger mt-1">
+          Цей email вже зареєстрований.
+        </div>
+
       </div>
 
       <div class="mb-3">
         <label class="form-label" for="register-password">Пароль</label>
         <input id="register-password" formControlName="password" type="password" class="form-control" placeholder="********">
+        <div *ngIf="registerForm.get('password')?.hasError('weakPassword') && registerForm.get('password')?.touched" class="text-danger mt-1">
+          Пароль має містити щонайменше 8 символів, одну велику літеру, одну малу та одну цифру.
+        </div>
+
       </div>
 
       <div class="mb-3">
         <label class="form-label" for="register-passwordRepeat">Повторіть пароль</label>
         <input id="register-passwordRepeat" formControlName="passwordRepeat" type="password" class="form-control" placeholder="********">
+        <div *ngIf="registerForm.hasError('passwordMismatch') && registerForm.touched" class="text-danger mt-1">
+          Паролі не збігаються.
+        </div>
       </div>
 
       <div class="d-grid">

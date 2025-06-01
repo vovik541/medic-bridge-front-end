@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService, RegisterRequest } from '../../../core/auth.service';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { LoginExistsValidatorService, passwordsMatchValidator } from '../../validators/login-exists-validator.service';
+import { emailExistsValidator, loginExistsValidator } from '../../validators/unique-user.validator';
+import { strongPasswordValidator } from '../../validators/strong-password.validator';
 
 @Component({
   selector: 'app-register-modal',
@@ -11,6 +15,7 @@ import { AuthService, RegisterRequest } from '../../../core/auth.service';
   templateUrl: './register-modal.component.html',
   styleUrl: './register-modal.component.css',
 })
+
 export class RegisterModalComponent {
   @ViewChild('lModalRegister', { static: false }) modal!: ElementRef;
 
@@ -19,16 +24,23 @@ export class RegisterModalComponent {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private loginValidatorService: LoginExistsValidatorService
   ) {
     this.registerForm = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      login: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      login: ['', 
+        Validators.required, 
+        loginExistsValidator(this.loginValidatorService)
+      ],
+      email: ['', 
+        [Validators.required, Validators.email], 
+        emailExistsValidator(this.loginValidatorService)
+      ],
+      password: ['', Validators.required, strongPasswordValidator],
       passwordRepeat: ['', Validators.required],
-    });
+    }, { validators: passwordsMatchValidator });
   }
 
   open() {
