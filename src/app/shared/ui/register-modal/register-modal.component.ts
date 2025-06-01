@@ -28,19 +28,22 @@ export class RegisterModalComponent {
     private loginValidatorService: LoginExistsValidatorService
   ) {
     this.registerForm = this.fb.group({
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
-      login: ['', 
-        Validators.required, 
-        loginExistsValidator(this.loginValidatorService)
-      ],
-      email: ['', 
-        [Validators.required, Validators.email], 
-        emailExistsValidator(this.loginValidatorService)
-      ],
-      password: ['', Validators.required, strongPasswordValidator],
-      passwordRepeat: ['', Validators.required],
-    }, { validators: passwordsMatchValidator });
+  firstname: ['', Validators.required],
+  lastname: ['', Validators.required],
+  login: [
+    '', 
+    [Validators.required], 
+    [loginExistsValidator(this.loginValidatorService)]
+  ],
+  email: [
+    '', 
+    [Validators.required, Validators.email], 
+    [emailExistsValidator(this.loginValidatorService)]
+  ],
+  password: ['', [Validators.required, strongPasswordValidator]],
+  passwordRepeat: ['', Validators.required],
+}, { validators: passwordsMatchValidator });
+
   }
 
   open() {

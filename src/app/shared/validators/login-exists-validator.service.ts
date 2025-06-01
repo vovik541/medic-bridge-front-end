@@ -7,14 +7,14 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class LoginExistsValidatorService {
-constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   checkLogin(login: string) {
-    return this.http.get(`${environment.apiUrl}/users/check-by-login`, { params: { login } });
+    return this.http.get<boolean>(`${environment.apiUrl}/users/check-by-login`, { params: { login } });
   }
 
   checkEmail(email: string) {
-    return this.http.get(`${environment.apiUrl}/users/check-by-email`, { params: { email } });
+    return this.http.get<boolean>(`${environment.apiUrl}/users/check-by-email`, { params: { email } });
   }
 }
 export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {

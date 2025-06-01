@@ -7,8 +7,8 @@ export function loginExistsValidator(service: LoginExistsValidatorService): Asyn
     return of(control.value).pipe(
       debounceTime(400),
       switchMap(value => service.checkLogin(value)),
-      map(() => ({ loginTaken: true })),
-      catchError(() => of(null))
+      map((exists: boolean) => exists ? { loginTaken: true } : null),
+      catchError(() => of(null)) // навіть якщо бекенд впаде — не зламає форму
     );
   };
 }
@@ -18,7 +18,7 @@ export function emailExistsValidator(service: LoginExistsValidatorService): Asyn
     return of(control.value).pipe(
       debounceTime(400),
       switchMap(value => service.checkEmail(value)),
-      map(() => ({ emailTaken: true })),
+      map((exists: boolean) => exists ? { emailTaken: true } : null),
       catchError(() => of(null))
     );
   };
